@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Sun Oct 23 17:08:20 2016
-# Update Count    : 156
+# Last Modified On: Sun Oct 23 23:14:53 2016
+# Update Count    : 163
 # Status          : Unknown, Use with caution!
 
 ################ Common stuff ################
@@ -18,7 +18,7 @@ use lib "$FindBin::Bin/../lib";
 # Package name.
 my $my_package = 'Sciurix';
 # Program name and version.
-my ($my_name, $my_version) = qw( comics 0.02 );
+my ($my_name, $my_version) = qw( comics 0.03 );
 
 ################ Command line parameters ################
 
@@ -169,15 +169,17 @@ sub save_state {
 my @plugins;
 
 sub load_plugins {
-    opendir( my $dh, $INC[0] . "/Comics/Plugins" )
+
+    opendir( my $dh, $INC[0] . "/Comics/Plugin" )
       or die("plugins: $!\n");
+
     while ( my $m = readdir($dh) ) {
 	next unless $m =~ /^[0-9A-Z].*\.pm$/;
-	next if $m eq "Base.pm";
 	next unless $m =~ $modfilter;
 	debug("Loading $m...");
-	my $pkg = eval { require "Comics/Plugins/$m" };
-	die("Comics::Plugins::$m: $@\n") unless $pkg;
+	my $pkg = eval { require "Comics/Plugin/$m" };
+	die("Comics::Plugin::$m: $@\n") unless $pkg;
+	next unless $pkg =~ /^Comics::Plugin::/;
 	my $ctl = $pkg->register;
 	push( @plugins, $ctl );
     }
@@ -186,10 +188,10 @@ sub load_plugins {
 
 sub run_plugins {
     foreach my $comic ( @plugins ) {
-	debug("SKIP: ", $comic->{name}), next if !$comic->{enabled};
+	# debug("SKIP: ", $comic->{name}), next if !$comic->{enabled};
 	debug("COMIC: ", $comic->{name});
-	$state->{comics}->{$comic->{tag}} =
-	  $comic->fetch( $state->{comics}->{$comic->{tag}} );
+	$comic->{state} = $state->{comics}->{$comic->{tag}};
+	$comic->fetch;
     }
 }
 

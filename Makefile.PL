@@ -11,7 +11,7 @@ my $version = MM->parse_version($master);
 WriteMakefile
 (
  NAME		=> 'Comics',
- ABSTRACT_FROM  => 'Comics aggregator in the style of Gotblah',
+ ABSTRACT       => 'Comics aggregator in the style of Gotblah',
  VERSION_FROM	=> $master,
  AUTHOR	        => 'Johan Vromans <jvromans@squirrel.nl>',
 
