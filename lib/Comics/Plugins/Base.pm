@@ -7,7 +7,7 @@ use Carp;
 
 package Comics::Plugins::Base;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 sub register {
     my ( $pkg, $init ) = @_;
@@ -44,6 +44,12 @@ sub fetch {
 
 sub html {
     my ( $self, $state ) = @_;
+    my $w = $self->{c_width};
+    my $h = $self->{c_height};
+    if ( $w > 1024 ) {
+	$w = 1024;
+	$h *= $w/$self->{c_width};
+    }
     join('',
 	 qq{<table class="toontable" cellpadding="0" cellspacing="0">\n},
 	 qq{<tr>},
@@ -54,12 +60,19 @@ sub html {
 	 qq{</font><br><br></td>\n},
 	 qq{</tr><tr><td>\n},
 	 qq{<a href="$self->{url}?$::uuid">},
-	 qq{<img border="0" alt="$self->{c_alt}" title="$self->{c_title}" src="$self->{c_img}"></a>},
+	 qq{<img border="0" alt="$self->{c_alt}" title="$self->{c_title}" src="$self->{c_img}" width="$w" height="$h"></a>},
 	 qq{</td></tr></table>\n},
 	);
 }
 
 ################ Subroutines ################
+
+use File::Spec;
+
+sub spoolfile {
+    my ( $file ) = @_;
+    File::Spec->catfile( $::spooldir, $file );
+}
 
 use Digest::MD5 qw(md5_base64);
 
@@ -70,11 +83,18 @@ sub tag_from_name {
     return $tag;
 }
 
+use Image::Info qw(image_info);
+
 sub _std_1 {
     my ( $self, $state, $pat ) = @_;
     my $name = $self->{name};
     my $ourl = $self->{url};
     delete $state->{fail};
+
+    $::stats->{tally}++;
+    $::stats->{fail}++;
+
+    ::debug("(Single) Fetching index $ourl");
     my $res = $::ua->get($ourl);
     unless ( $res->is_success ) {
 	$state->{fail} = $res->status_line;
@@ -114,6 +134,7 @@ sub _std_1 {
     }
 
     $state->{trying} = $url;
+    ::debug("(Single) Fetching image $url");
     $res = $::ua->get($url);
     unless ( $res->is_success ) {
 	$state->{fail} = $res->status_line;
@@ -122,22 +143,32 @@ sub _std_1 {
     }
 
     $data = $res->content;
-    unless ( $data ) {
+    my $info;
+    if ( !$data or !($info = image_info(\$data)) ) {
 	$state->{fail} = "NO DATA";
 	::debug("FAIL (image): ", $state->{fail});
 	return $state;
     }
+    $::stats->{fail}--;
 
     my $md5 = md5_base64($data);
-    if ( $state->{md5} && $state->{md5} eq $md5 ) {
-	::debug("Up to date");
+    if ( $state->{md5} and $state->{md5} eq $md5 ) {
+	::debug("(Single) Up to date $url");
+	$::stats->{uptodate}++;
 	return $state;
     }
 
-    open( my $fd, ">:raw", $::spooldir.$img );
+    $img = $tag . "." . $info->{file_ext};
+    $self->{c_width}  = $info->{width};
+    $self->{c_height} = $info->{height};
+
+    my $f = spoolfile($img);
+    open( my $fd, ">:raw", $f );
     print $fd $data;
-    close($fd);
-    $state->{update} = $::ts;
+    close($fd) or warn("$f: $!\n");
+    ::debug("Wrote: $f");
+
+    $state->{update} = time;
     $state->{md5} = $md5;
     delete( $state->{trying} );
 
@@ -146,9 +177,11 @@ sub _std_1 {
     $self->{c_img} = $img;
 
     my $html = "$tag.html";
-    open( $fd, ">:utf8", $::spooldir.$html );
+    $f = spoolfile($html);
+    open( $fd, ">:utf8", $f );
     print $fd $self->html($state);
-    close($fd);
+    close($fd) or warn("$f: $!\n");
+    ::debug("Wrote: $f");
 
     $state->{url} = $url;
     return $state;
@@ -158,8 +191,14 @@ sub _direct {
     my ( $self, $state ) = @_;
     my $url = $self->{url};
     my $path = _urlabs( $url, $self->{path} );
+    delete $state->{fail};
+
+    $::stats->{tally}++;
+    $::stats->{fail}++;
 
     $state->{trying} = $url;
+
+    ::debug("(Direct) Fetching image $url");
     my $res = $::ua->get($url);
     unless ( $res->is_success ) {
 	$state->{fail} = $res->status_line;
@@ -173,10 +212,12 @@ sub _direct {
 	::debug("FAIL (image): ", $state->{fail});
 	return $state;
     }
+    $::stats->{fail}--;
 
     my $md5 = md5_base64($data);
     if ( $state->{md5} && $state->{md5} eq $md5 ) {
-	::debug("Up to date");
+	::debug("(Direct) Up to date $url");
+	$::stats->{uptodate}++;
 	return $state;
     }
 
@@ -184,10 +225,13 @@ sub _direct {
     my $tag = $self->{tag};
     $img =~ s/^.*(\.\w+)$/$tag$1/;
 
-    open( my $fd, ">:raw", $::spooldir.$img );
+    my $f = spoolfile($img);
+    open( my $fd, ">:raw", $f );
     print $fd $data;
-    close($fd);
-    $state->{update} = $::ts;
+    close($fd) or warn("$f: $!\n");
+    ::debug("Wrote: $f");
+
+    $state->{update} = time;
     $state->{md5} = $md5;
     delete( $state->{trying} );
 
@@ -196,9 +240,11 @@ sub _direct {
     $self->{c_img} = $img;
 
     my $html = "$tag.html";
-    open( $fd, ">:utf8", $::spooldir.$html );
+    $f = spoolfile($html);
+    open( $fd, ">:utf8", $f );
     print $fd $self->html($state);
-    close($fd);
+    close($fd) or warn("$f: $!\n");
+    ::debug("Wrote: $f");
 
     $state->{url} = $url;
     return $state;

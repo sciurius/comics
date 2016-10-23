@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Oct 22 21:07:05 2016
-# Update Count    : 141
+# Last Modified On: Sun Oct 23 17:08:20 2016
+# Update Count    : 156
 # Status          : Unknown, Use with caution!
 
 ################ Common stuff ################
@@ -18,7 +18,7 @@ use lib "$FindBin::Bin/../lib";
 # Package name.
 my $my_package = 'Sciurix';
 # Program name and version.
-my ($my_name, $my_version) = qw( comics 0.01 );
+my ($my_name, $my_version) = qw( comics 0.02 );
 
 ################ Command line parameters ################
 
@@ -28,8 +28,8 @@ use Getopt::Long 2.13;
 our $spooldir = $ENV{HOME} . "/tmp/gotblah/";
 my $statefile = $spooldir . ".state.json";
 my $refresh;
-my $fetchonly;			# for debugging
-my $verbose = 0;		# verbose processing
+my $fetchonly;			# debugging
+my $verbose = 1;		# verbose processing
 
 # Development options (not shown with -help).
 my $debug = 0;			# debugging
@@ -41,6 +41,15 @@ app_options();
 
 # Post-processing.
 $trace |= ($debug || $test);
+$spooldir .= "/";
+$spooldir =~ s;/+$;/;;
+
+my $modfilter = ".";
+
+if ( @ARGV ) {
+    $modfilter = "^(?:" . join("|", @ARGV) . ")\\.pm\$";
+}
+$modfilter = qr($modfilter);
 
 ################ Presets ################
 
@@ -111,12 +120,25 @@ my $comics =
 
 ################ The Process ################
 
+our $ts = time;
+our $stats =
+  { tally => 0,
+    fail => 0,
+    uptodate => 0,
+  };
+
 load_plugins();
 get_state();
 collect();
 save_state();
 
 build();
+
+if ( $verbose ) {
+    warn( "Comics processed = ", $stats->{tally}, ", ",
+	  $stats->{uptodate}, " uptodate, ",
+	  $stats->{fail}, " fail.\n" );
+}
 
 ################ Subroutines ################
 
@@ -131,7 +153,7 @@ sub get_state {
 	$state = JSON->new->decode($data);
     }
     else {
-	$state = { comics => { map { $_ => {} } @$comics } };
+	$state = { comics => { } };
 
     }
 }
@@ -147,13 +169,12 @@ sub save_state {
 my @plugins;
 
 sub load_plugins {
-
     opendir( my $dh, $INC[0] . "/Comics/Plugins" )
       or die("plugins: $!\n");
     while ( my $m = readdir($dh) ) {
 	next unless $m =~ /^[0-9A-Z].*\.pm$/;
 	next if $m eq "Base.pm";
-	next if $fetchonly && "$fetchonly.pm" ne $m;
+	next unless $m =~ $modfilter;
 	debug("Loading $m...");
 	my $pkg = eval { require "Comics/Plugins/$m" };
 	die("Comics::Plugins::$m: $@\n") unless $pkg;
@@ -176,14 +197,12 @@ use LWP::UserAgent;
 
 our $ua;
 our $uuid;
-our $ts;
 
 sub collect {
 
     unless ( $ua ) {
 	$ua = LWP::UserAgent::Custom->new;
 	$uuid = uuid();
-	$ts = time;
     }
 
 =begin xxx
@@ -307,9 +326,10 @@ sub app_options {
     if ( @ARGV > 0 ) {
 	GetOptions('spooldir=s' => \$spooldir,
 		   'refresh'	=> \$refresh,
-		   'fetchonly=s'=> \$fetchonly,
+		   'fetchonly'  => \$fetchonly,
 		   'ident'	=> \$ident,
-		   'verbose'	=> \$verbose,
+		   'verbose+'	=> \$verbose,
+		   'quiet'	=> sub { $verbose = 0 },
 		   'trace'	=> \$trace,
 		   'help|?'	=> \$help,
 		   'man'	=> \$man,
