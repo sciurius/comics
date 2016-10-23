@@ -1,4 +1,4 @@
-A comics collector in the style of Gotblah.
+A comics aggregator in the style of Gotblah.
 
 This one runs privately and generates a static comics page.
 
