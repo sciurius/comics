@@ -1,6 +1,27 @@
 Revision history for Comics
 
+0.05	2016-10-24
+
+	CPAN packaging improvements.
+	Improve documentation.
+	Improve GoComics fetcher.
+	Fix problem with new plugins losing state.
+
+0.04	2016-10-24
+
+	Add S1ngle plugin.
+	More documentation.
+
 0.03	2016-10-24
 
+	Move collect code to Comics.pm.
+	Introduce Fetchers (Comics::Fetcher).
+	Rename Plugins to Plugin (Comics::Plugin).
+	Add documentation and more CPAN files.
+    	Improve checks and logging; add width/height.
+    	More plugins.
 	First CPAN release.
 
+0.02	2016-10-23
+
+	Initial (GitHub) release.
