@@ -1,5 +1,12 @@
 #! perl
 
+# Author          : Johan Vromans
+# Created On      : Fri Oct 21 09:18:23 2016
+# Last Modified By: Johan Vromans
+# Last Modified On: Mon Oct 24 16:01:12 2016
+# Update Count    : 200
+# Status          : Unknown, Use with caution!
+
 use 5.012;
 use strict;
 use warnings;
@@ -8,18 +15,9 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 package main;
-
-#!/usr/bin/perl -w
-
-# Author          : Johan Vromans
-# Created On      : Fri Oct 21 09:18:23 2016
-# Last Modified By: Johan Vromans
-# Last Modified On: Mon Oct 24 15:40:03 2016
-# Update Count    : 199
-# Status          : Unknown, Use with caution!
 
 ################ Common stuff ################
 

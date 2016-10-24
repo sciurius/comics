@@ -2,3 +2,6 @@
 *~
 spool/
 Released/
+blib/
+lib/Image
+

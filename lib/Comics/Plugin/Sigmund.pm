@@ -3,6 +3,22 @@
 use strict;
 use warnings;
 
+=head1 NAME
+
+Sigmund - Fully commented plugin for Comics.
+
+=head1 SYNOPSIS
+
+Please read the comments in the source.
+
+=head1 DESCRIPTION
+
+This plugin handles the Sigmund comics from http://www.sigmund.nl .
+
+It is also a commented example of how to write your own plugins.
+
+=cut
+
 # All plugins fall under the Comics::Plugin hierarchy.
 #
 # Please choose a descriptive name for the plugin.
@@ -46,7 +62,7 @@ package Comics::Plugin::Sigmund;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 # A plugin must implement the 'register' method.
 
