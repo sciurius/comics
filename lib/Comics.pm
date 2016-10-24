@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon Oct 24 16:01:12 2016
-# Update Count    : 200
+# Last Modified On: Mon Oct 24 19:58:05 2016
+# Update Count    : 203
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -35,7 +35,7 @@ BEGIN {
 # Package name.
 my $my_package = 'Sciurix';
 # Program name and version.
-my ($my_name, $my_version) = qw( comics 0.04 );
+my ($my_name, $my_version) = qw( comics 0.05 );
 
 ################ Command line parameters ################
 
@@ -237,6 +237,7 @@ sub run_plugins {
     foreach my $comic ( @plugins ) {
 	# debug("SKIP: ", $comic->{name}), next if !$comic->{enabled};
 	debug("COMIC: ", $comic->{name});
+	$state->{comics}->{$comic->{tag}} ||= {};
 	$comic->{state} = $state->{comics}->{$comic->{tag}};
 	$comic->fetch;
     }
@@ -334,7 +335,7 @@ sub statistics {
 }
 
 sub statmsg {
-    join( '', "Comics processed = ", $stats->{tally}, ", ",
+    join( '', "Number of comics = ", $stats->{tally}, ", ",
 	  $stats->{tally} - $stats->{uptodate} - $stats->{fail}, " new, ",
 	  $stats->{uptodate}, " uptodate, ",
 	  $stats->{fail}, " fail." );
