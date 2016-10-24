@@ -1,3 +1,4 @@
+Changes
 README.md
 Makefile.PL
 MANIFEST
@@ -39,3 +40,4 @@ lib/Comics/Fetcher/GoComics.pm
 lib/Comics/Fetcher/Single.pm
 script/collect.pl
 script/pp.PL
+t/00-load.t

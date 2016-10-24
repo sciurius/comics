@@ -5,7 +5,54 @@ use warnings;
 
 package Comics::Plugin::Base;
 
+=head1 NAME
+
+Comics::Plugin::Base -- Base class for Plugins.
+
+=head1 SYNOPSIS
+
+This base class is only used indirectly via the Fetchers.
+
+=head1 DESCRIPTION
+
+The Plugin Base class provides tools for Plugins.
+
+=cut
+
 our $VERSION = "0.03";
+
+=head1 CONSTRUCTOR
+
+=head2 register( { ... } )
+
+Registers the plugin to the aggregator.
+
+The method takes a hash ref with arguments. What arguments are
+possible depends on the plugin's Fetcher type. See the documentation
+of the Fetchers for more info.
+
+Common arguments are:
+
+=over 8
+
+=item name
+
+The full name of this comic, e.g. "Fokke en Sukke".
+
+=item url
+
+The url of this comic's home page.
+
+=item tag
+
+A short identifier for this comic. This will be automatically provided
+if not specified.
+
+The tag is used to generate file names for images and HTML fragments.
+
+=back
+
+=cut
 
 sub register {
     my ( $pkg, $init ) = @_;
@@ -14,6 +61,14 @@ sub register {
     $self->{tag} ||= $self->tag_from_name;
     return $self;
 }
+
+=head1 METHODS
+
+=head2 html
+
+Generates an HTML fragment for a fetched image.
+
+=cut
 
 sub html {
     my ( $self ) = @_;
@@ -38,9 +93,11 @@ sub html {
 	 qq{  </tr>\n  <tr><td><a href="$self->{url}?$::uuid">} .
 	 qq{<img border="0" };
 
-    $res .= qq{alt="} . _html($self->{c_alt}) . qq{" }
+    # Alt and title are extracted from HTML, so they should be
+    # properly escaped.
+    $res .= qq{alt="} . $self->{c_alt} . qq{" }
       if $self->{c_alt};
-    $res .= qq{title="} . _html($self->{c_title}) . qq{" }
+    $res .= qq{title="} . $self->{c_title} . qq{" }
       if $self->{c_title};
     $res .= qq{width="$w" height="$h" }
       if $w && $h;

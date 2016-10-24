@@ -11,7 +11,7 @@ my $version = MM->parse_version($master);
 WriteMakefile
 (
  NAME		=> 'Comics',
- ABSTRACT       => 'Comics aggregator in the style of Gotblah',
+ ABSTRACT_FROM  => $master,
  VERSION_FROM	=> $master,
  AUTHOR	        => 'Johan Vromans <jvromans@squirrel.nl>',
 
@@ -34,18 +34,6 @@ WriteMakefile
 
  META_MERGE => {
      license          => "perl_5",
-     provides         => {
-	 collect => { file => "script/collect",
-		       version => $version },
-	 "Comics"
-		  => { file => "lib/Comics.pm",
-		       version => $version },
-     },
-     no_index         => {
-         directory => [
-	    "lib/Comics/Plugins",
-	 ],
-     },
  },
 
 );
