@@ -25,6 +25,7 @@ lib/Comics/Plugin/QuantumVibe.pm
 lib/Comics/Plugin/QuestionableContent.pm
 lib/Comics/Plugin/Rubes.pm
 lib/Comics/Plugin/Sigmund.pm
+lib/Comics/Plugin/S1ngle.pm
 lib/Comics/Plugin/Sinfest.pm
 lib/Comics/Plugin/SMBC.pm
 lib/Comics/Plugin/TheJoyOfTech.pm
