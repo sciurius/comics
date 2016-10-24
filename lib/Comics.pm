@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon Oct 24 20:05:09 2016
-# Update Count    : 205
+# Last Modified On: Mon Oct 24 20:15:51 2016
+# Update Count    : 207
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 package main;
 
@@ -34,8 +34,8 @@ BEGIN {
 
 # Package name.
 my $my_package = 'Sciurix';
-# Program name and version.
-my ($my_name, $my_version) = qw( comics 0.05 );
+# Program name.
+my $my_name = "comics";
 
 ################ Command line parameters ################
 
@@ -386,7 +386,7 @@ sub app_options {
 	  or $pod2usage->(2);
     }
     if ( $ident or $help or $man ) {
-	print STDERR ("This is $my_package [$my_name $my_version]\n");
+	print STDERR ("This is $my_name version $VERSION\n");
     }
     if ( $man or $help ) {
 	$pod2usage->(1) if $help;
