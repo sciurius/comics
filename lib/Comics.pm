@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon Oct 24 19:58:05 2016
-# Update Count    : 203
+# Last Modified On: Mon Oct 24 20:05:09 2016
+# Update Count    : 205
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -398,9 +398,13 @@ sub app_options {
 
 =head1 NAME
 
-Comics - comics aggregator in the style of Gotblah
+Comics - Comics aggregator in the style of Gotblah
 
 =head1 SYNOPSIS
+
+  perl -MComics -e 'main()' -- [options] [plugin ...]
+
+or
 
   perl Comics.pm [options] [plugin ...]
 
