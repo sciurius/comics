@@ -30,10 +30,6 @@ Comics::Fetcher::GoComics -- Fetcher for GoComics.
 The C<GoComics> Fetcher handles comics that are on the GoComics
 websites (comics.com, gocomics.com).
 
-B<Note:> The current implementation uses the C<Single> Fetcher which
-returns a slightly too small, sub-optimal image. This will be fixed in
-a future release.
-
 The Fetcher requires the common arguments:
 
 =over 8
@@ -60,7 +56,7 @@ Fetcher specific arguments:
 
 use Comics::Fetcher::Single;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 sub fetch {
     my ( $self ) = @_;
@@ -73,7 +69,8 @@ sub fetch {
 	  alt="(?<alt>[^"]+)" \s+
 	  class="strip" \s+
 	  src="(?<url>http://assets.amuniversal.com/
-	    (?<image>[0-9a-f]+))"
+	    (?<image>[0-9a-f]+))" \s+
+          /></div>
         }x;
     Comics::Fetcher::Single::fetch($self);
 }
