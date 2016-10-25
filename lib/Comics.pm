@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Tue Oct 25 14:56:24 2016
-# Update Count    : 267
+# Last Modified On: Wed Oct 26 00:05:00 2016
+# Update Count    : 273
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.06";
+our $VERSION = "0.07";
 
 package main;
 
@@ -43,7 +43,7 @@ use Getopt::Long 2.13;
 
 # Command line options.
 our $spooldir = $ENV{HOME} . "/tmp/gotblah/";
-my $statefile = $spooldir . ".state.json";
+my $statefile;
 my $refresh;
 my $activate = 0;		# enable/disable
 my $fetchonly;			# debugging
@@ -57,7 +57,7 @@ my $test = 0;			# test mode.
 
 # Extra command line arguments are taken to be plugin names.
 # If specified, only named plugins are included.
-my $modfilter;
+my $pluginfilter;
 
 ################ Presets ################
 
@@ -145,12 +145,13 @@ sub init {
     $trace |= ($debug || $test);
     $spooldir .= "/";
     $spooldir =~ s;/+$;/;;
-
-    $modfilter = ".";
+    $statefile = $spooldir . ".state.json";
+    
+    $pluginfilter = ".";
     if ( @ARGV ) {
-	$modfilter = "^(?:" . join("|", @ARGV) . ")\\.pm\$";
+	$pluginfilter = "^(?:" . join("|", @ARGV) . ")\\.pm\$";
     }
-    $modfilter = qr($modfilter)i;
+    $pluginfilter = qr($pluginfilter)i;
 
 }
 
@@ -227,11 +228,7 @@ sub load_plugins {
 
     while ( my $m = readdir($dh) ) {
 	next unless $m =~ /^[0-9A-Z].*\.pm$/;
-
-	my $active = 1;
-	unless ( $m =~ $modfilter ) {
-	    next unless $activate || $list;
-	}
+	next unless $m =~ $pluginfilter;
 
 	debug("Loading $m...");
 	my $pkg = eval { require "Comics/Plugin/$m" };
@@ -239,13 +236,11 @@ sub load_plugins {
 	next unless $pkg =~ /^Comics::Plugin::/;
 	my $comic = $pkg->register;
 	push( @plugins, $comic );
-	if ( $m =~ $modfilter && !$list ) {
-	    if ( $activate >= 0 ) {
-		delete $state->{comics}->{$comic->{tag}}->{disabled};
-	    }
-	    else {
-		$state->{comics}->{$comic->{tag}}->{disabled} = 1;
-	    }
+	if ( $activate > 0 ) {
+	    delete $state->{comics}->{$comic->{tag}}->{disabled};
+	}
+	elsif ( $activate < 0 ) {
+	    $state->{comics}->{$comic->{tag}}->{disabled} = 1;
 	}
 	debug("Comics::Plugin::$m: Disabled")
 	  if $state->{comics}->{$comic->{tag}}->{disabled};

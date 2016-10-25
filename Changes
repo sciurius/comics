@@ -1,6 +1,12 @@
 Revision history for Comics
 
-0.05	2016-10-25
+0.06	2016-10-26
+
+	Fix problem where the location of the statefile was
+	initialized before the command line args were handled.
+	Fix problem with processing of the plugins selectors.
+
+0.06	2016-10-25
 
 	Enable/Disable/List plugins via command line.
 	Make a backup copy of the state file before changing it.
