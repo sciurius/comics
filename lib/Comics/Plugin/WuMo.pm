@@ -7,7 +7,7 @@ package Comics::Plugin::WuMo;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 sub register {
     shift->SUPER::register
@@ -17,7 +17,7 @@ sub register {
 	    qr{ <img \s+
 		src="(?<url>/img/wumo/\d+/\d+/
 		  (?<image>wumo.+?\.\w+))" \s+
-	        alt="(?<alt>Wumo \s \d+\. \s \w+ \s \d+)" \s+
+	        alt="(?<alt>.*?)" \s+
 		/>
 	      }x,
 	} );
