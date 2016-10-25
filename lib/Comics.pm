@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon Oct 24 20:15:51 2016
-# Update Count    : 207
+# Last Modified On: Tue Oct 25 14:56:24 2016
+# Update Count    : 267
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.05";
+our $VERSION = "0.06";
 
 package main;
 
@@ -45,7 +45,9 @@ use Getopt::Long 2.13;
 our $spooldir = $ENV{HOME} . "/tmp/gotblah/";
 my $statefile = $spooldir . ".state.json";
 my $refresh;
+my $activate = 0;		# enable/disable
 my $fetchonly;			# debugging
+my $list;			# produce listing
 my $verbose = 1;		# verbose processing
 
 # Development options (not shown with -help).
@@ -157,11 +159,23 @@ sub main {
     # Initialize.
     init();
 
+    # Restore state of previous run.
+    get_state();
+
     # Load the plugins.
     load_plugins();
 
-    # Restore state of previous run.
-    get_state();
+    # Non-aggregating command: list.
+    if ( $list ) {
+	list_plugins();
+	return;
+    }
+
+    # Non-aggregating command: enable/disable.
+    if ( $activate ) {
+	save_state();
+	return;
+    }
 
     # Run the plugins to fetch new images.
     run_plugins();
@@ -196,6 +210,8 @@ sub get_state {
 
 sub save_state {
     return if $fetchonly;
+    unlink($statefile."~");
+    rename( $statefile, $statefile."~" );
     open( my $fd, '>', $statefile );
     print $fd JSON->new->canonical->pretty(1)->encode($state);
     close($fd);
@@ -211,13 +227,66 @@ sub load_plugins {
 
     while ( my $m = readdir($dh) ) {
 	next unless $m =~ /^[0-9A-Z].*\.pm$/;
-	next unless $m =~ $modfilter;
+
+	my $active = 1;
+	unless ( $m =~ $modfilter ) {
+	    next unless $activate || $list;
+	}
+
 	debug("Loading $m...");
 	my $pkg = eval { require "Comics/Plugin/$m" };
 	die("Comics::Plugin::$m: $@\n") unless $pkg;
 	next unless $pkg =~ /^Comics::Plugin::/;
-	my $ctl = $pkg->register;
-	push( @plugins, $ctl );
+	my $comic = $pkg->register;
+	push( @plugins, $comic );
+	if ( $m =~ $modfilter && !$list ) {
+	    if ( $activate >= 0 ) {
+		delete $state->{comics}->{$comic->{tag}}->{disabled};
+	    }
+	    else {
+		$state->{comics}->{$comic->{tag}}->{disabled} = 1;
+	    }
+	}
+	debug("Comics::Plugin::$m: Disabled")
+	  if $state->{comics}->{$comic->{tag}}->{disabled};
+
+    }
+
+}
+
+sub list_plugins {
+
+    my $lpl = length("Comics::Plugin::");
+    my $lft = length("Comics::Fetcher::");
+    my ( $l_name, $l_plugin, $l_fetcher ) = ( 0, 0, $lft+8 );
+
+    my @tm;
+    @plugins =
+      sort { $b->{update} <=> $a->{update} }
+	map {
+	    $_->{update} = $state->{comics}->{ $_->{tag} }->{update} ||= 0;
+	    @tm = localtime($_->{update});
+	    $_->{updated} = sprintf( "%04d-%02d-%02d %02d:%02d:%02d",
+				     1900+$tm[5], 1+$tm[4], @tm[3,2,1,0] );
+	    $l_name = length($_->{name}) if $l_name < length($_->{name});
+	    $l_plugin = length(ref($_)) if $l_name < length(ref($_));
+	    $_;
+	} @plugins;
+
+    $l_plugin -= $lpl;
+    $l_fetcher -= $lft;
+    my $fmt = "%-${l_name}s   %-${l_plugin}s   %-${l_fetcher}s   %-8s   %s\n";
+    foreach my $comic ( @plugins ) {
+
+	my $st = $state->{comics}->{ $comic->{tag} };
+	no strict 'refs';
+	printf( $fmt,
+		$comic->{name},
+		substr( ref($comic), $lpl ),
+		substr( ${ref($comic)."::"}{ISA}[0], $lft ),
+		$st->{disabled} ? "disabled" : "enabled",
+		$comic->{update} ? $comic->{updated} : "",
+	      );
     }
 
 }
@@ -239,6 +308,7 @@ sub run_plugins {
 	debug("COMIC: ", $comic->{name});
 	$state->{comics}->{$comic->{tag}} ||= {};
 	$comic->{state} = $state->{comics}->{$comic->{tag}};
+	next if $comic->{state}->{disabled};
 	$comic->fetch;
     }
 }
@@ -335,10 +405,10 @@ sub statistics {
 }
 
 sub statmsg {
-    join( '', "Number of comics = ", $stats->{tally}, ", ",
+    join( '', "Number of comics = ", $stats->{tally}, " (",
 	  $stats->{tally} - $stats->{uptodate} - $stats->{fail}, " new, ",
 	  $stats->{uptodate}, " uptodate, ",
-	  $stats->{fail}, " fail." );
+	  $stats->{fail}, " fail)" );
 }
 
 sub uuid {
@@ -376,6 +446,9 @@ sub app_options {
 	GetOptions('spooldir=s' => \$spooldir,
 		   'refresh'	=> \$refresh,
 		   'fetchonly'  => \$fetchonly,
+		   'enable'	=> \$activate,
+		   'disable'	=> sub { $activate = -1 },
+		   'list'	=> \$list,
 		   'ident'	=> \$ident,
 		   'verbose+'	=> \$verbose,
 		   'quiet'	=> sub { $verbose = 0 },
@@ -414,6 +487,9 @@ If the associated C<collect> tool has been installed properly:
 
    Options:
      --spooldir=XXX	where resultant images and index must be stored
+     --enable		enables the plugins (no aggregation)
+     --disable		disables the plugins (no aggregation)
+     --list		lists the plugins (no aggregation)
      --refresh		consider all images as new
      --ident		shows identification
      --help		shows a brief help message and exits
@@ -429,6 +505,28 @@ If the associated C<collect> tool has been installed properly:
 
 Designates the spool area. Downloaded comics and index files are
 written here.
+
+=item B<--enable>
+
+The plugins that are named on the command line will be enabled for
+future runs of the aggregator. Default is to enable all plugins.
+
+Note that when this command is used, the program exits after enabling
+the plugins and exits. No aggregation takes place.
+
+=item B<--disable>
+
+The plugins that are named on the command line will be disabled for
+future runs of the aggregator. Default is to disable all plugins.
+
+Note that when this command is used, the program exits after disabling
+the plugins and exits. No aggregation takes place.
+
+=item B<--list>
+
+Provides information on all the plugins.
+
+Note that when this command is used, no aggregation takes place.
 
 =item B<--help>
 
@@ -455,13 +553,15 @@ Silences verbose information.
 
 If present, process only the specified plugins.
 
-Mostly for testing.
+This is used for disabling and enabling plugins, but it can also be
+used to test individual plugins.
 
 =back
 
 =head1 DESCRIPTION
 
-This program will load the available plugins and run all of them.
+The normal task of this program is to perform aggregation. it will
+load the available plugins and run all of them.
 
 The plugins will examine the contents of comics sites and update the
 'cartoon of the day' in the spool area.
@@ -470,6 +570,15 @@ Upon completion, an index.html is generated in the spool area to view
 the comics collection.
 
 It is best to run this program from the spool area itself.
+
+=head2 Special commands
+
+Note that no aggregation is performed when using any of these commands.
+
+With command line option B<--list> a listing of the plugins is produced.
+
+Plugins can be enabled and disabled with B<--enable> and B<--disable>
+respectively.
 
 =head1 PLUGINS
 

@@ -1,5 +1,11 @@
 Revision history for Comics
 
+0.05	2016-10-25
+
+	Enable/Disable/List plugins via command line.
+	Make a backup copy of the state file before changing it.
+	Fix WuMo plugin.
+
 0.05	2016-10-24
 
 	CPAN packaging improvements.
@@ -25,3 +31,7 @@ Revision history for Comics
 0.02	2016-10-23
 
 	Initial (GitHub) release.
+
+0.01	2016-10-23
+
+	Initial commit.
