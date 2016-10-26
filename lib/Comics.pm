@@ -47,6 +47,7 @@ my $statefile;
 my $refresh;
 my $activate = 0;		# enable/disable
 my $fetchonly;			# debugging
+my $buildonly;			# debugging
 my $list;			# produce listing
 my $verbose = 1;		# verbose processing
 
@@ -304,7 +305,7 @@ sub run_plugins {
 	$state->{comics}->{$comic->{tag}} ||= {};
 	$comic->{state} = $state->{comics}->{$comic->{tag}};
 	next if $comic->{state}->{disabled};
-	$comic->fetch;
+	$comic->fetch unless $buildonly;
     }
 }
 
@@ -441,6 +442,7 @@ sub app_options {
 	GetOptions('spooldir=s' => \$spooldir,
 		   'refresh'	=> \$refresh,
 		   'fetchonly'  => \$fetchonly,
+		   'buildonly'  => \$buildonly,
 		   'enable'	=> \$activate,
 		   'disable'	=> sub { $activate = -1 },
 		   'list'	=> \$list,
