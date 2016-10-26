@@ -5,7 +5,7 @@ use warnings;
 
 package Comics::Fetcher::GoComics;
 
-use parent qw(Comics::Fetcher::Base);
+use parent qw(Comics::Fetcher::Cascade);
 
 =head1 NAME
 
@@ -54,17 +54,13 @@ Fetcher specific arguments:
 
 =cut
 
-use Comics::Fetcher::Single;
+our $VERSION = "0.03";
 
-our $VERSION = "0.02";
+sub register {
+    my ( $pkg, $init ) = @_;
 
-sub fetch {
-    my ( $self ) = @_;
-
-    # Currently suboptiomal (image is a bit smaller).
-    # Need a better method in the future.
-
-    $self->{pat} =
+    # Add the standard pattern for GoComics comics.
+    $init->{pat} =
       qr{ <img \s+
 	  alt="(?<alt>[^"]+)" \s+
 	  class="strip" \s+
@@ -72,7 +68,9 @@ sub fetch {
 	    (?<image>[0-9a-f]+))" \s+
           /></div>
         }x;
-    Comics::Fetcher::Single::fetch($self);
+
+    # Leave the rest to SUPER.
+    $pkg->SUPER::register($init);
 }
 
 1;
