@@ -5,6 +5,10 @@ Revision history for Comics
 	Add --rebuild to rebuild just the HTML index without fetching
 	new comics. Thanks to tux@tux.nl for the suggestion.
 	Eliminate --fetchonly.
+	Eliminate --buildonly.
+	New Fetcher: Cascade. Handles a series of patterns, each
+	designating the page to be loaded for the next pattern.
+	Comics::Fetcher::Single is now a dummy wrapper around Cascade.
 
 0.06	2016-10-26
 

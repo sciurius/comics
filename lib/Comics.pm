@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Wed Oct 26 13:21:38 2016
-# Update Count    : 281
+# Last Modified On: Wed Oct 26 19:19:26 2016
+# Update Count    : 283
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -46,6 +46,7 @@ our $spooldir = $ENV{HOME} . "/tmp/gotblah/";
 my $statefile;
 my $refresh;
 my $activate = 0;		# enable/disable
+my $force;			# process disabled modules as well
 my $rebuild;			# rebuild index, no fetching
 my $list;			# produce listing
 my $verbose = 1;		# verbose processing
@@ -304,7 +305,7 @@ sub run_plugins {
 	debug("COMIC: ", $comic->{name});
 	$state->{comics}->{$comic->{tag}} ||= {};
 	$comic->{state} = $state->{comics}->{$comic->{tag}};
-	next if $comic->{state}->{disabled};
+	next if $comic->{state}->{disabled} && !$force;
 	$comic->fetch;
     }
 }
@@ -325,11 +326,11 @@ sub build {
     @files =
       map { $_->[0] }
 	sort { $b->[1] <=> $a->[1] }
-	  grep { ! $state->{comics}->{$_->[2]}->{disabled} }
+	  grep { $force || ! $state->{comics}->{$_->[2]}->{disabled} }
 	    map { [ $_, (stat($_))[9], s/\.\w+$//r ] }
 	      @files;
 
-    if ( $debug ) {
+    if ( $debug > 1 ) {
 	warn("Images (sorted):\n");
 	warn("   $_\n") for @files;
     }
@@ -453,6 +454,7 @@ sub app_options {
 		   'enable'	=> \$activate,
 		   'disable'	=> sub { $activate = -1 },
 		   'list'	=> \$list,
+		   'force'	=> \$force,
 		   'ident'	=> \$ident,
 		   'verbose+'	=> \$verbose,
 		   'quiet'	=> sub { $verbose = 0 },
