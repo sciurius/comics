@@ -20,10 +20,10 @@ Comics::Fetcher::Single -- Cascading url grabber
       shift->SUPER::register
 	( { name    => "Sigmund",
 	    url     => "http://www.sigmund.nl/",
-	    pat	  => [ qr{ ... (?<url>...) ... },
+	    pats    => [ qr{ ... (?<url>...) ... },
 	               qr{ ... (?<url>...) ... },
-	               ... ,
-	               qr{ ... (?<url>...(?<image>...)) ... } ],
+	               ...
+	               qr{ ... (?<url>...) ... } ],
 	  } );
   }
   # Return the package name.
@@ -31,11 +31,11 @@ Comics::Fetcher::Single -- Cascading url grabber
 
 =head1 DESCRIPTION
 
-The C<Cascading> Fetcher requires registration of an array I<pat> of
-patterns that are used, one by one, to determine the URL of the
-desired image. Each pattern must match to the url for the next
-pattern, and the final pattern has to provide the final url and image
-name.
+The C<Cascading> Fetcher can use one or more patterns to determine the
+URL of the desired image. If multiple patterns are supplied, each
+pattern is applied to the fetched page and must define the url for the
+next page as a named capture. The process is repeated, and the final
+pattern has to provide the final url and image name.
 
 The Fetcher requires the common arguments:
 
@@ -47,51 +47,50 @@ The full name of this comic, e.g. "Fokke en Sukke".
 
 =item url
 
-The url of this comic's home page.
+The url of this comic's starting (i.e. home) page.
 
 =back
 
 Fetcher specific arguments:
 
+This Fetcher requires either C<path> (direct URL fetch), C<pat>
+(single fetch), or C<pats> (cascading fetch).
+
 =over 8
 
+=item path
+
+The URL of the desired image.
+
+If I<path> is not an absolute URL, it will be interpreted relative to
+the I<url>.
+
 =item pat
+
+A pattern to locate the image URL from the starting page.
+
+=item pats
 
 An array ref with patterns to locate the image URL.
 
 When a pattern matches, it must define the named capture C<url>, which
 points to the page to be loaded and used for the next pattern.
 
-The final pattern has to define:
+=back
+
+The final pattern may additionally define:
 
 =over 8
 
-=item url
-
-The (relative) url of the image.
-
-If the URL is not an absolute URL, it will be interpreted relative to
-the I<url> argument.
-
-=item image
-
-The image name within the url.
-
 =item title
 
-Optional. The image title.
+The image title.
 
 =item alt
 
-Optional. The alternative text.
+The alternative text.
 
 =back
-
-=back
-
-As a special case, C<pat> may point to a pattern in which case the
-Cascade Fetcher behaves identical to the Single Fetcher. In fact,
-the Single Fetcher is a dummy wrapper around the Cascade Fetcher.
 
 =cut
 
@@ -103,112 +102,77 @@ our $VERSION = "0.01";
 sub fetch {
     my ( $self ) = @_;
     my $state = $self->{state};
-    my $pat = $self->{pat};
-    my $name = $self->{name};
-    my $url = $self->{url};
+    my $pats  = $self->{pats} || $self->{pat};
+    my $name  = $self->{name};
+    my $url   = $self->{url};
     delete $state->{fail};
 
-    $::stats->{tally}++;
-    $::stats->{fail}++;
+    my ( $image, $title, $alt ) = @_;
 
-    my @pats;
-    if ( ref($pat) eq 'ARRAY' ) {
-	@pats = @$pat;
-	$pat = pop(@pats);
+    if ( $self->{path} ) {
+	$url = $self->urlabs( $url, $self->{path} );
     }
+    else {
+	my $pix = 0;
+	my $data;
+	$pats = [ $pats ] unless eval { @$pats };
+	foreach my $pat ( @$pats ) {
+	    $pix++;
 
-    my $pix = 0;
-    while ( @pats ) {
-	my $pat = shift(@pats);
-	$pix++;
+	    ::debug("Fetching page $pix $url");
+	    my $res = $::ua->get($url);
+	    unless ( $res->is_success ) {
+		$self->{fail} = "Not found", return if $self->{optional};
+		die($res->status_line);
+	    }
 
-	::debug("(Single) Fetching page $pix $url");
-	my $res = $::ua->get($url);
-	unless ( $res->is_success ) {
-	    $state->{fail} = $res->status_line;
-	    ::debug("FAIL: ", $state->{fail});
-	    return;
+	    $data = $res->content;
+	    unless ( $data =~ $pat ) {
+		$self->{fail} = "No match", return if $self->{optional};
+		die("FAIL: pattern $pix not found");
+	    }
+
+	    $url = $self->urlabs( $url, $+{url} );
+	    unless ( $url ) {
+		die("FAIL: pattern $pix not found");
+	    }
+
+	    # Other match data expected:
+	    $title = $+{title};
+	    $alt   = $+{alt};
 	}
 
-	my $data = $res->content;
-	unless ( $data =~ $pat ) {
-	    $state->{fail} = "NOT FOUND $pix";
-	    ::debug("FAIL: pattern $pix not found");
-	    return;
-	}
-
-	$url   = $self->urlabs( $url, $+{url} );
-	unless ( $url ) {
-	    $state->{fail} = "NOT FOUND $pix";
-	    ::debug("FAIL: pattern $pix not found");
-	    return;
+        unless ( $title ) {
+	    $title = $1 if $data =~ /<title>(.*?)<\/title>/;
+	    $title ||= $name;
 	}
     }
-
-    $pix++;
-    ::debug("(Single) Fetching page $pix $url");
-    my $res = $::ua->get($url);
-    unless ( $res->is_success ) {
-	$state->{fail} = $res->status_line;
-	::debug("FAIL: ", $state->{fail});
-	return;
-    }
-
-    my $data = $res->content;
-    unless ( $data =~ $pat ) {
-	$state->{fail} = "NOT FOUND $pix";
-	::debug("FAIL: pattern $pix (final) not found");
-	return;
-    }
-
-    # Match data expected:
-    #
-    # url (mandatory)
-    # image (mandatory)
-    # title
-    # alt
-    $url   = $self->urlabs( $url, $+{url} );
-    my $image = $+{image};
-    my $title = $+{title};
-    my $alt   = $+{alt};
 
     my $tag = $self->{tag};
     $alt ||= $tag;
-
-    my $img = $image;
-    $img =~ s/^.+(\.\w+)$/$tag$1/;
-
-    unless ( $title ) {
-	$title = $1 if $data =~ /<title>(.*?)<\/title>/;
-	$title ||= $name;
-    }
+    $title ||= $name;
 
     $state->{trying} = $url;
-    ::debug("(Single) Fetching image $url");
-    $res = $::ua->get($url);
+    ::debug("Fetching image $url");
+    my $res = $::ua->get($url);
     unless ( $res->is_success ) {
-	$state->{fail} = $res->status_line;
-	::debug("FAIL (image): ", $state->{fail});
-	return;
+	die("FAIL (image): ", $state->{fail});
     }
 
-    $data = $res->content;
+    my $data = $res->content;
     my $info;
     if ( !$data or !($info = Image::Info::image_info(\$data)) ) {
-	$state->{fail} = "NO DATA";
-	::debug("FAIL (image): ", $state->{fail});
-	return;
+	die("FAIL: image no data");
     }
-    $::stats->{fail}--;
 
     my $md5 = Digest::MD5::md5_base64($data);
     if ( $state->{md5} and $state->{md5} eq $md5 ) {
-	::debug("(Single) Up to date $url");
+	::debug("Fetching: Up to date $url");
 	$::stats->{uptodate}++;
 	return $state;
     }
 
-    $img = $tag . "." . $info->{file_ext};
+    my $img = $tag . "." . $info->{file_ext};
     $self->{c_width}  = $info->{width};
     $self->{c_height} = $info->{height};
 

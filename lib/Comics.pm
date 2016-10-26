@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Wed Oct 26 19:19:26 2016
-# Update Count    : 283
+# Last Modified On: Wed Oct 26 22:59:38 2016
+# Update Count    : 290
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -237,9 +237,13 @@ sub load_plugins {
 	die("Comics::Plugin::$m: $@\n") unless $pkg;
 	next unless $pkg =~ /^Comics::Plugin::/;
 	my $comic = $pkg->register;
+	next unless $comic;
+
 	push( @plugins, $comic );
+
+	my $activate = $comic->{disabled} ? -1 : $activate;
 	if ( $activate > 0 ) {
-	    delete $state->{comics}->{$comic->{tag}}->{disabled};
+	    delete( $state->{comics}->{$comic->{tag}}->{disabled} )
 	}
 	elsif ( $activate < 0 ) {
 	    $state->{comics}->{$comic->{tag}}->{disabled} = 1;
@@ -301,12 +305,26 @@ sub run_plugins {
     }
 
     foreach my $comic ( @plugins ) {
-	# debug("SKIP: ", $comic->{name}), next if !$comic->{enabled};
 	debug("COMIC: ", $comic->{name});
+
+	# Force existence of this comic's state otherwise
+	# it will be autovivified within the fetch method
+	# and never get outside.
 	$state->{comics}->{$comic->{tag}} ||= {};
+
+	# Make the state accessible.
 	$comic->{state} = $state->{comics}->{$comic->{tag}};
+
+	# Skip is disabled.
 	next if $comic->{state}->{disabled} && !$force;
-	$comic->fetch;
+
+	# Run it, trapping errors.
+	$stats->{tally}++;
+	unless ( eval { $comic->fetch; 1 } ) {
+	    $comic->{state}->{fail} = $@;
+	    debug($comic->{state}->{fail});
+	    $stats->{fail}++;
+	}
     }
 }
 
