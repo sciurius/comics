@@ -320,10 +320,11 @@ sub build {
 
     # Sort the fragments on last modification date.
     @files =
-      map { $_->[-1] }
-	sort { $b->[9] <=> $a->[9] }
-	  map { [ stat($_), $_ ] }
-	    @files;
+      map { $_->[0] }
+	sort { $b->[10] <=> $a->[10] }
+	  grep { warn "$_->[-1]\n"; !$state->{comics}->{$_->[-1]}->{disabled} }
+	    map { [ $_, stat($_), s/\.\w+$//r ] }
+	      @files;
 
     if ( $debug && !$fetchonly ) {
 	warn("Images (sorted):\n");
