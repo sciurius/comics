@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Wed Oct 26 12:06:18 2016
-# Update Count    : 279
+# Last Modified On: Wed Oct 26 13:21:38 2016
+# Update Count    : 281
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.07";
+our $VERSION = "0.08";
 
 package main;
 
@@ -305,7 +305,7 @@ sub run_plugins {
 	$state->{comics}->{$comic->{tag}} ||= {};
 	$comic->{state} = $state->{comics}->{$comic->{tag}};
 	next if $comic->{state}->{disabled};
-	$comic->fetch unless $buildonly;
+	$comic->fetch;
     }
 }
 
