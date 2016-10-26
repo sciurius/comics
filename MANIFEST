@@ -7,6 +7,7 @@ lib/Comics/Plugin/9ChickweedLane.pm
 lib/Comics/Plugin/Base.pm
 lib/Comics/Plugin/Buttersafe.pm
 lib/Comics/Plugin/CalvinAndHobbes.pm
+lib/Comics/Plugin/CommitStrip.pm
 lib/Comics/Plugin/CyanideAndHappiness.pm
 lib/Comics/Plugin/Dilbert.pm
 lib/Comics/Plugin/Farcus.pm
@@ -35,7 +36,15 @@ lib/Comics/Plugin/WhatTheDuck.pm
 lib/Comics/Plugin/WorkingDaze.pm
 lib/Comics/Plugin/WuMo.pm
 lib/Comics/Plugin/XKCD.pm
+lib/Comics/Plugin/AbstruseGoose.pm
+lib/Comics/Plugin/CtrlAltDel.pm
+lib/Comics/Plugin/DoghouseDiaries.pm
+lib/Comics/Plugin/MyJetpack.pm
+lib/Comics/Plugin/PlayerVsPlayer.pm
+lib/Comics/Plugin/Soopah.pm
+lib/Comics/Plugin/SoopahBonus.pm
 lib/Comics/Fetcher/Base.pm
+lib/Comics/Fetcher/Cascade.pm
 lib/Comics/Fetcher/Direct.pm
 lib/Comics/Fetcher/GoComics.pm
 lib/Comics/Fetcher/Single.pm

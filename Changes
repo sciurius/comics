@@ -1,16 +1,21 @@
 Revision history for Comics
 
-0.07	2016-10-xx
+0.08	2016-10-26
 
 	Add --rebuild to rebuild just the HTML index without fetching
 	new comics. Thanks to tux@tux.nl for the suggestion.
 	Eliminate --fetchonly.
 	Eliminate --buildonly.
-	New Fetcher: Cascade. Handles a series of patterns, each
-	designating the page to be loaded for the next pattern.
-	Comics::Fetcher::Single is now a dummy wrapper around Cascade.
+	New Fetcher: Cascade. Handles a series (one or more) of
+	patterns, each designating the page to be loaded for the next
+	pattern.
+	Comics::Fetcher::Single is now a wrapper around Cascade.
+	Comics::Fetcher::Direct is now a wrapper around Cascade.
+	Comics::Fetcher::GoComics is now a wrapper around Cascade.
+	Add comics CtrlAltDel MyJetpack PlayerVsPlayer Soopah
+	SoopahBonus Abstrusegoose DoghouseDiaries.
 
-0.06	2016-10-26
+0.07	2016-10-26
 
 	Fix problem where the location of the statefile was
 	initialized before the command line args were handled.
