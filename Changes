@@ -1,5 +1,11 @@
 Revision history for Comics
 
+0.07	2016-10-xx
+
+	Add --rebuild to rebuild just the HTML index without fetching
+	new comics. Thanks to tux@tux.nl for the suggestion.
+	Eliminate --fetchonly.
+
 0.06	2016-10-26
 
 	Fix problem where the location of the statefile was

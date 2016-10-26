@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Wed Oct 26 00:05:00 2016
-# Update Count    : 273
+# Last Modified On: Wed Oct 26 11:59:30 2016
+# Update Count    : 278
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -46,7 +46,7 @@ our $spooldir = $ENV{HOME} . "/tmp/gotblah/";
 my $statefile;
 my $refresh;
 my $activate = 0;		# enable/disable
-my $fetchonly;			# debugging
+my $rebuild;			# rebuild index, no fetching
 my $list;			# produce listing
 my $verbose = 1;		# verbose processing
 
@@ -146,7 +146,7 @@ sub init {
     $spooldir .= "/";
     $spooldir =~ s;/+$;/;;
     $statefile = $spooldir . ".state.json";
-    
+
     $pluginfilter = ".";
     if ( @ARGV ) {
 	$pluginfilter = "^(?:" . join("|", @ARGV) . ")\\.pm\$";
@@ -178,28 +178,29 @@ sub main {
 	return;
     }
 
-    # Run the plugins to fetch new images.
-    run_plugins();
+    unless ( $rebuild ) {
+	# Run the plugins to fetch new images.
+	run_plugins();
 
-    # Save the state.
-    save_state();
+	# Save the state.
+	save_state();
+    }
 
-    # Gather the HTML fragmnt into a single index.html.
+    # Gather the HTML fragments into a single index.html.
     build();
 
     # Show processing statistics.
     statistics();
 }
 
-################ Subroutines ################
+################ State subroutines ################
 
 use JSON;
 
 my $state;
 
 sub get_state {
-    return {} if $refresh || $fetchonly;
-    if ( open( my $fd, '<', $statefile ) ) {
+    if ( !$refresh && open( my $fd, '<', $statefile ) ) {
 	my $data = do { local $/; <$fd>; };
 	$state = JSON->new->decode($data);
     }
@@ -210,7 +211,6 @@ sub get_state {
 }
 
 sub save_state {
-    return if $fetchonly;
     unlink($statefile."~");
     rename( $statefile, $statefile."~" );
     open( my $fd, '>', $statefile );
@@ -218,6 +218,7 @@ sub save_state {
     close($fd);
 }
 
+################ Plugin subroutines ################
 
 my @plugins;
 
@@ -308,6 +309,8 @@ sub run_plugins {
     }
 }
 
+################ Index subroutines ################
+
 sub build {
 
     # Change to the spooldir and collect all HTML fragments.
@@ -316,15 +319,17 @@ sub build {
     my @files = grep { /^[^._].+(?<!index)\.(?:html)$/ } readdir($dir);
     close($dir);
     warn("Number of images = ", scalar(@files), "\n") if $debug;
+    $stats->{tally} = $stats->{uptodate} = @files if $rebuild;
 
     # Sort the fragments on last modification date.
     @files =
-      map { $_->[-1] }
-	sort { $b->[9] <=> $a->[9] }
-	  map { [ stat($_), $_ ] }
-	    @files;
+      map { $_->[0] }
+	sort { $b->[1] <=> $a->[1] }
+	  grep { ! $state->{comics}->{$_->[2]}->{disabled} }
+	    map { [ $_, (stat($_))[9], s/\.\w+$//r ] }
+	      @files;
 
-    if ( $debug && !$fetchonly ) {
+    if ( $debug ) {
 	warn("Images (sorted):\n");
 	warn("   $_\n") for @files;
     }
@@ -394,6 +399,8 @@ sub htmlstats {
 EOD
 }
 
+################ Statistics subroutines ################
+
 sub statistics {
     return unless $verbose;
     warn( statmsg(), "\n" );
@@ -405,6 +412,8 @@ sub statmsg {
 	  $stats->{uptodate}, " uptodate, ",
 	  $stats->{fail}, " fail)" );
 }
+
+################ Miscellaneous ################
 
 sub uuid {
     my @chars = ( 'a'..'f', 0..9 );
@@ -422,7 +431,7 @@ sub debug {
     warn(@_,"\n");
 }
 
-################ Subroutines ################
+################ Command line handling ################
 
 sub app_options {
     my $help = 0;		# handled locally
@@ -440,7 +449,7 @@ sub app_options {
     if ( @ARGV > 0 ) {
 	GetOptions('spooldir=s' => \$spooldir,
 		   'refresh'	=> \$refresh,
-		   'fetchonly'  => \$fetchonly,
+		   'rebuild'    => \$rebuild,
 		   'enable'	=> \$activate,
 		   'disable'	=> sub { $activate = -1 },
 		   'list'	=> \$list,
@@ -485,6 +494,7 @@ If the associated C<collect> tool has been installed properly:
      --enable		enables the plugins (no aggregation)
      --disable		disables the plugins (no aggregation)
      --list		lists the plugins (no aggregation)
+     --rebuild		rebuild index.html, no fetching
      --refresh		consider all images as new
      --ident		shows identification
      --help		shows a brief help message and exits
@@ -522,6 +532,10 @@ the plugins and exits. No aggregation takes place.
 Provides information on all the plugins.
 
 Note that when this command is used, no aggregation takes place.
+
+=item B<--rebuild>
+
+Recreates index.html in the spooldir without fetching new comics.
 
 =item B<--help>
 
