@@ -28,7 +28,7 @@ be implemented by the derived classes.
 
 use parent qw(Comics::Plugin::Base);
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 sub fetch {
     my ( $self ) = @_;
@@ -54,13 +54,6 @@ sub spoolfile {
 }
 
 use Digest::MD5 qw(md5_base64);
-
-sub tag_from_name {
-    my $self = shift;
-    my $tag = lc($self->{name});
-    $tag =~ s/\W//g;
-    return $tag;
-}
 
 use Image::Info qw(image_info);
 

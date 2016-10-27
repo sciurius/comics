@@ -19,7 +19,7 @@ The Plugin Base class provides tools for Plugins.
 
 =cut
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 =head1 CONSTRUCTOR
 
@@ -116,6 +116,19 @@ sub _html {
     $t =~ s/"/&quote;/g;
 
     return $t;
+}
+
+=head2 html
+
+Generates a tag (identifier) from the name of the plugin.
+
+=cut
+
+sub tag_from_name {
+    my $self = shift;
+    my $tag = lc($self->{name});
+    $tag =~ s/\W//g;
+    return $tag;
 }
 
 1;
