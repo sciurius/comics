@@ -28,4 +28,4 @@ LICENSE
 Copyright (C) 2016 Johan Vromans,
 
 This module is free software. You can redistribute it and/or modify it
-under the terms of the Artistic License 2.0.
+under the same terms as Perl.
