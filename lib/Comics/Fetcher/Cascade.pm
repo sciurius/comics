@@ -7,6 +7,8 @@ use Carp;
 
 package Comics::Fetcher::Cascade;
 
+our $VERSION = "0.02";
+
 =head1 NAME
 
 Comics::Fetcher::Single -- Cascading url grabber
@@ -21,9 +23,9 @@ Comics::Fetcher::Single -- Cascading url grabber
 	( { name    => "Sigmund",
 	    url     => "http://www.sigmund.nl/",
 	    pats    => [ qr{ ... (?<url>...) ... },
-	               qr{ ... (?<url>...) ... },
-	               ...
-	               qr{ ... (?<url>...) ... } ],
+                         qr{ ... (?<url>...) ... },
+                         ...
+                         qr{ ... (?<url>...) ... } ],
 	  } );
   }
   # Return the package name.
@@ -96,9 +98,6 @@ The alternative text.
 
 use parent qw(Comics::Fetcher::Base);
 
-our $VERSION = "0.01";
-
-
 sub fetch {
     my ( $self ) = @_;
     my $state = $self->{state};
@@ -138,8 +137,8 @@ sub fetch {
 	    }
 
 	    # Other match data expected:
-	    $title = $+{title};
-	    $alt   = $+{alt};
+	    $title = $+{title} if $+{title};
+	    $alt   = $+{alt}   if $+{alt};
 	}
 
         unless ( $title ) {
