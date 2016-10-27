@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Wed Oct 26 22:59:38 2016
-# Update Count    : 290
+# Last Modified On: Thu Oct 27 09:44:04 2016
+# Update Count    : 293
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -264,8 +264,10 @@ sub list_plugins {
     my @tm;
     @plugins =
       sort { ($state->{comics}->{$a->{tag}}->{disabled} // 0) <=>
-             ($state->{comics}->{$b->{tag}}->{disabled} // 0) ||
-              $b->{update}         <=>  $a->{update} }
+               ($state->{comics}->{$b->{tag}}->{disabled} // 0) ||
+	     $b->{update}         <=>  $a->{update} ||
+	     $a->{name}           cmp  $b->{name}
+	   }
 	map {
 	    $_->{update} = $state->{comics}->{ $_->{tag} }->{update} ||= 0;
 	    @tm = localtime($_->{update});
@@ -626,6 +628,8 @@ See L<Comics::Plugin::Sigmund> for a fully commented plugin.
 =head1 FETCHERS
 
 Fetchers implement different fetch strategies. Currently provided are:
+
+L<Comics::Fetcher::Cascade> - fetch a comic by loading and examining a series of URLs.
 
 L<Comics::Fetcher::Direct> - fetch a comic by URL.
 
