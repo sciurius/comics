@@ -3,15 +3,15 @@
 use strict;
 use warnings;
 
-package Comics::Plugin::Soupa;
+package Comics::Plugin::Soopah;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 sub register {
     shift->SUPER::register
-      ( { name    => "Soupa",
+      ( { name    => "Soopah",
 	  url     => "http://soopahcomics.com/",
 	  pat     =>
 	    qr{ <div \s+ id="comic"> \s+

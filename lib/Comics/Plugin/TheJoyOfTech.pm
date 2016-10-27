@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-package Comics::Plugin::JoyOfTech;
+package Comics::Plugin::TheJoyOfTech;
 
 use parent qw(Comics::Fetcher::Single);
 

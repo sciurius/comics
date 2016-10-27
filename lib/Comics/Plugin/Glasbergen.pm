@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-package Comics::Plugin::Glasebergen;
+package Comics::Plugin::Glasbergen;
 
 use parent qw(Comics::Fetcher::Single);
 
