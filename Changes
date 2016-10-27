@@ -1,5 +1,14 @@
 Revision history for Comics
 
+0.09	2016-10-xx
+
+	Small enhancements and fixes to the sorting of the listing.
+	(GoComics) Derive url from name or tag.
+	Move tag-from-name method from Fetcher to Plugin.
+	Add overall totals to statistics.
+	Add comics DoYouKnowFlo EEK FrankAndErnest Megatokyo Monty
+	NonSequitur SavageChickens Wondermark.
+
 0.08	2016-10-26
 
 	Add --rebuild to rebuild just the HTML index without fetching
