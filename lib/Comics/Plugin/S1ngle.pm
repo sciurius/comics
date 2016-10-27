@@ -12,10 +12,10 @@ our $VERSION = "0.01";
 sub register {
 
     # S1ngle has strips ma, di, .., za (weekdays).
-    # Strips on the site are usually one day behind.
-    # So if it's tuesday, fetch strip for monday.
+    # Strips on the site are usually some days behind.
+
     my @tm = localtime;
-    my $wd = $tm[6] - 1;
+    my $wd = $tm[6];
     $wd += 7 if $wd < 0;
     $wd = 6 if $wd == 0;
     $wd = qw( ma di wo do vr za )[$wd-1];

@@ -3,14 +3,16 @@
 my @modules;
 
 BEGIN {
-    @modules = 	( 'Comics',
-		  'Comics::Fetcher::Base',
-		  'Comics::Fetcher::Direct',
-		  'Comics::Fetcher::GoComics',
-		  'Comics::Fetcher::Single',
-		  'Comics::Plugin::Base',
-		  'Comics::Plugin::Sigmund',
-		);
+    @modules =
+      qw( Comics
+	  Comics::Fetcher::Base
+	  Comics::Fetcher::Cascade
+	  Comics::Fetcher::Direct
+	  Comics::Fetcher::GoComics
+	  Comics::Fetcher::Single
+	  Comics::Plugin::Base
+	  Comics::Plugin::Sigmund
+       );
 }
 
 use Test::More tests => scalar @modules;
