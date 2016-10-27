@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Oct 27 09:44:04 2016
-# Update Count    : 293
+# Last Modified On: Thu Oct 27 12:29:08 2016
+# Update Count    : 297
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.08";
+our $VERSION = "0.09";
 
 package main;
 
@@ -136,6 +136,7 @@ sub init {
     $stats =
       { tally => 0,
 	fail => 0,
+	loaded => 0,
 	uptodate => 0,
       };
 
@@ -230,6 +231,7 @@ sub load_plugins {
 
     while ( my $m = readdir($dh) ) {
 	next unless $m =~ /^[0-9A-Z].*\.pm$/;
+	$stats->{loaded}++;
 	next unless $m =~ $pluginfilter;
 
 	debug("Loading $m...");
@@ -430,9 +432,12 @@ sub statistics {
 }
 
 sub statmsg {
-    join( '', "Number of comics = ", $stats->{tally}, " (",
+    join( '', "Number of comics = ", $stats->{loaded}, " (",
 	  $stats->{tally} - $stats->{uptodate} - $stats->{fail}, " new, ",
 	  $stats->{uptodate}, " uptodate, ",
+	  $stats->{loaded} != $stats->{tally}
+	  ? ( $stats->{loaded} - $stats->{tally}, " disabled, " )
+	  : (),
 	  $stats->{fail}, " fail)" );
 }
 
