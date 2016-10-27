@@ -263,14 +263,16 @@ sub list_plugins {
 
     my @tm;
     @plugins =
-      sort { $b->{update} <=> $a->{update} }
+      sort { ($state->{comics}->{$a->{tag}}->{disabled} // 0) <=>
+             ($state->{comics}->{$b->{tag}}->{disabled} // 0) ||
+              $b->{update}         <=>  $a->{update} }
 	map {
 	    $_->{update} = $state->{comics}->{ $_->{tag} }->{update} ||= 0;
 	    @tm = localtime($_->{update});
 	    $_->{updated} = sprintf( "%04d-%02d-%02d %02d:%02d:%02d",
 				     1900+$tm[5], 1+$tm[4], @tm[3,2,1,0] );
 	    $l_name = length($_->{name}) if $l_name < length($_->{name});
-	    $l_plugin = length(ref($_)) if $l_name < length(ref($_));
+	    $l_plugin = length(ref($_)) if $l_plugin < length(ref($_));
 	    $_;
 	} @plugins;
 
