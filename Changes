@@ -1,6 +1,6 @@
 Revision history for Comics
 
-0.09	2016-10-xx
+0.09	2016-10-27
 
 	Small enhancements and fixes to the sorting of the listing.
 	(GoComics) Derive url from name or tag.
@@ -8,6 +8,12 @@ Revision history for Comics
 	Add overall totals to statistics.
 	Add comics DoYouKnowFlo EEK FrankAndErnest Megatokyo Monty
 	NonSequitur SavageChickens Wondermark.
+	Add comics APOKALIPS ASofterWorld AmazingSuperPowers
+	AmazingSuperPowersSecretToon DieselSweeties DominicDeegan
+	GarfieldMinusGarfield HaraKiri HeinDeKort Lectrr LittleGamers
+	Nozzman OrderOfTheStick PennyArcade RedMeat
+	TheMinistryOfAbnormality VGCats. This completes all the
+	original Gotblah toons, although some are no longer functional.
 
 0.08	2016-10-26
 
