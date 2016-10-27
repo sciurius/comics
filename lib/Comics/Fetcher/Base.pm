@@ -70,6 +70,7 @@ sub urlabs {
 	    $path = "http:" . $path;
 	}
 	else {
+	    $url =~ s;(^\w+://.*?)/.*;$1;;
 	    $path = $url . $path;
 	}
     }
