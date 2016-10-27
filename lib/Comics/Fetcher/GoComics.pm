@@ -54,13 +54,20 @@ Fetcher specific arguments:
 
 =cut
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 sub register {
     my ( $pkg, $init ) = @_;
 
+    # Leave the rest to SUPER.
+    my $self = $pkg->SUPER::register($init);
+
+    if ( ! $self->{url} && $self->{tag} ) {
+	$self->{url} = "http://www.gocomics.com/" . $self->{tag} . "/";
+    }
+
     # Add the standard pattern for GoComics comics.
-    $init->{pat} =
+    $self->{pat} =
       qr{ <img \s+
 	  alt="(?<alt>[^"]+)" \s+
 	  class="strip" \s+
@@ -69,8 +76,7 @@ sub register {
           /></div>
         }x;
 
-    # Leave the rest to SUPER.
-    $pkg->SUPER::register($init);
+    return $self;
 }
 
 1;
