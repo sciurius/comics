@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Oct 27 12:29:08 2016
-# Update Count    : 297
+# Last Modified On: Thu Oct 27 15:42:08 2016
+# Update Count    : 300
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -62,71 +62,6 @@ my $pluginfilter;
 
 ################ Presets ################
 
-my $comics =
-  [
-   "9 Chickweed Lane",
-   "Abstrusegoose",
-   "Amazing Super Powers Secret Toon",
-   "APOKALIPS",
-   "asofterworld",
-   "Buttersafe",
-   "Calvin and Hobbes",
-   "CTRL ALT DEL",
-   "Diesel sweeties",
-   "Dilbert",
-   "Doghouse diaries",
-   "Dominic Deegan",
-   "Do you know Flo",
-   "EEK!",
-   "Evert Kwok",
-   "Explosm",
-   "Extralife",
-   "Farcus",
-   "Fokke Sukke",
-   "Frank and Ernest",
-   "Garfield",
-   "Garfield Minus Garfield",
-   "Geek Poke",
-   "Glasbergen",
-   "Hein de Kort",
-   "Jesus and Mo",
-   "Kevin and Kell",
-   "Least I Could Do",
-   "Lectrrland",
-   "Little Gamers",
-   "Looking For Group",
-   "Megatokyo",
-   "Monty",
-   "Non Sequitur",
-   "Nozzman",
-   "Off the mark",
-   "Over the hedge",
-   "Peanuts",
-   "Penny Arcade",
-   "Player vs Player",
-   "Questionable Content",
-   "Red Meat",
-   "Rubes",
-   "Saturday Morning Breakfast Cereal",
-   "Savage Chickens",
-   "Sigmund",
-   "Sinfest",
-   "Soopah! comics",
-   "The Joy of Tech",
-   "The Ministry of Normality",
-   "The Order of the Stick",
-   "the WAREHOUSE webcomic",
-   "Quantum Vibe",
-   "User Friendly",
-   "VG Cats",
-   "What the Duck",
-   "Wondermark",
-   "Working Daze",
-   "Wulffmorgenthaler",
-   "XKCD",
-   "You're all just jealous of my Jetpack",
-  ];
-
 ################ The Process ################
 
 # Statistics.
@@ -145,6 +80,7 @@ sub init {
 
     # Post-processing.
     $trace |= ($debug || $test);
+    $verbose = 255 if $debug;
     $spooldir .= "/";
     $spooldir =~ s;/+$;/;;
     $statefile = $spooldir . ".state.json";
@@ -311,7 +247,7 @@ sub run_plugins {
     }
 
     foreach my $comic ( @plugins ) {
-	debug("COMIC: ", $comic->{name});
+	warn("Plugin: ", $comic->{name}, "\n") if $verbose > 1;
 
 	# Force existence of this comic's state otherwise
 	# it will be autovivified within the fetch method
