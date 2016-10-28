@@ -83,6 +83,12 @@ our $VERSION = "0.03";
 our $name    = "Sigmund";
 our $url     = "http://www.sigmund.nl/";
 
+# Optional variables:
+#
+# $disabled : permanently disables this plugin. It cannot be
+#             re-enabled via the command line.
+#             Useful if a site has ceased to exist.
+
 # Other variables depend on the Fetcher.
 #
 # For the Direct Fetcher:
@@ -108,9 +114,9 @@ our $url     = "http://www.sigmund.nl/";
 #
 # For the GoComics Fetcher:
 #
-# $url : the base url of this comic
+# No extra variables are needed.
 
-our @patterns =
+our $pattern =
   qr{ <img \s+
        src="?(?<url>strips/(?<image>sig.+\.\w+))"? \s+
                     width  = "\d+" \s+

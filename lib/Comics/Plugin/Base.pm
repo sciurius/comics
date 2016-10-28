@@ -58,7 +58,7 @@ sub register {
     my ( $pkg, $init ) = @_;
 
     # API 1.1 - fill %init with package variables.
-    for ( qw( name tag path url pattern patterns ) ) {
+    for ( qw( name tag path url pattern patterns disabled ) ) {
 	no strict 'refs';
 	next unless defined ${$pkg."::"}{$_};
 	my $dst = $_;
