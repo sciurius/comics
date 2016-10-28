@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Oct 28 10:04:38 2016
-# Update Count    : 303
+# Last Modified On: Fri Oct 28 11:11:18 2016
+# Update Count    : 306
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -468,7 +468,7 @@ If the associated C<collect> tool has been installed properly:
      --refresh		consider all images as new
      --ident		shows identification
      --help		shows a brief help message and exits
-     --man                shows full documentation and exits
+     --man              shows full documentation and exits
      --verbose		provides more verbose information
      --quiet		provides no information unless failure
 
@@ -487,7 +487,7 @@ The plugins that are named on the command line will be enabled for
 future runs of the aggregator. Default is to enable all plugins.
 
 Note that when this command is used, the program exits after enabling
-the plugins and exits. No aggregation takes place.
+the plugins. No aggregation takes place.
 
 =item B<--disable>
 
@@ -495,11 +495,11 @@ The plugins that are named on the command line will be disabled for
 future runs of the aggregator. Default is to disable all plugins.
 
 Note that when this command is used, the program exits after disabling
-the plugins and exits. No aggregation takes place.
+the plugins. No aggregation takes place.
 
 =item B<--list>
 
-Provides information on all the plugins.
+Provides information on the selected (default: all) plugins.
 
 Note that when this command is used, no aggregation takes place.
 
