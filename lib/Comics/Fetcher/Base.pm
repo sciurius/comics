@@ -109,10 +109,10 @@ See also: B<spoolfile>.
 =cut
 
 sub save_html {
-    my ( $self, $html ) = @_;
+    my ( $self, $html, $data ) = @_;
     my $f = $self->spoolfile($html);
     open( my $fd, ">:utf8", $f );
-    print $fd $self->html;
+    print $fd ( $data // $self->html );
     close($fd) or warn("$f: $!\n");
     ::debug("Wrote: $f");
 }

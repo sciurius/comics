@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Oct 28 11:11:18 2016
-# Update Count    : 306
+# Last Modified On: Fri Oct 28 22:07:06 2016
+# Update Count    : 309
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -73,6 +73,8 @@ sub init {
 	fail => 0,
 	loaded => 0,
 	uptodate => 0,
+	excluded => 0,
+	disabled => 0,
       };
 
     # Process command line options.
@@ -138,9 +140,14 @@ use JSON;
 my $state;
 
 sub get_state {
-    if ( !$refresh && open( my $fd, '<', $statefile ) ) {
+    if ( open( my $fd, '<', $statefile ) ) {
 	my $data = do { local $/; <$fd>; };
 	$state = JSON->new->decode($data);
+	if ( $refresh ) {
+	    delete( $_->{md5} )
+	      foreach values( %{ $state->{comics} } );
+	    use Data::Dumper; $Data::Dumper::indent=1; warn(Dumper($state));
+	}
     }
     else {
 	$state = { comics => { } };
@@ -191,8 +198,10 @@ sub load_plugins {
 	elsif ( $activate < 0 ) {
 	    $state->{comics}->{$comic->{tag}}->{disabled} = 1;
 	}
-	debug("Comics::Plugin::$m: Disabled")
-	  if $state->{comics}->{$comic->{tag}}->{disabled};
+	if ( $state->{comics}->{$comic->{tag}}->{disabled} ) {
+	    $stats->{disabled}++;
+	    debug("Comics::Plugin::$m: Disabled");
+	}
 
     }
 
@@ -373,13 +382,20 @@ sub statistics {
 }
 
 sub statmsg {
-    join( '', "Number of comics = ", $stats->{loaded}, " (",
-	  $stats->{tally} - $stats->{uptodate} - $stats->{fail}, " new, ",
-	  $stats->{uptodate}, " uptodate, ",
-	  $stats->{loaded} != $stats->{tally}
-	  ? ( $stats->{loaded} - $stats->{tally}, " disabled, " )
-	  : (),
-	  $stats->{fail}, " fail)" );
+    my $loaded = $stats->{loaded};
+    my $tally = $stats->{tally};
+    my $uptodate = $stats->{uptodate};
+    my $fail = $stats->{fail};
+    my $disabled = $stats->{disabled};
+    my $new = $stats->{tally} - $stats->{uptodate} - $stats->{fail};
+    my $excluded = $loaded - $uptodate - $fail - $disabled;
+    my $res = "Number of comics = $loaded (".
+      "$new new, " .
+	"$uptodate uptodate";
+    $res .= ", $disabled disabled" if $disabled;
+    $res .= ", $excluded excluded" if $excluded;
+    $res .= ", $fail fail" if $fail;
+    return "$res)";
 }
 
 ################ Miscellaneous ################
@@ -398,6 +414,10 @@ sub uuid {
 sub debug {
     return unless $debug;
     warn(@_,"\n");
+}
+
+sub debugging {
+    $debug;
 }
 
 ################ Command line handling ################

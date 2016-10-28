@@ -104,6 +104,7 @@ sub fetch {
     my $pats  = $self->{pats} || $self->{pat};
     my $name  = $self->{name};
     my $url   = $self->{url};
+    my $tag   = $self->{tag};
     delete $state->{fail};
 
     my ( $image, $title, $alt ) = @_;
@@ -128,6 +129,8 @@ sub fetch {
 	    $data = $res->content;
 	    unless ( $data =~ $pat ) {
 		$self->{fail} = "No match", return if $self->{optional};
+		# Save a copy of the failed data.
+		save_html( ".$tag.html", $data ) if $::debugging();
 		die("FAIL: pattern $pix not found");
 	    }
 
@@ -147,7 +150,6 @@ sub fetch {
 	}
     }
 
-    my $tag = $self->{tag};
     $alt ||= $tag;
     $title ||= $name;
 
