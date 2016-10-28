@@ -7,15 +7,13 @@ package Comics::Plugin::GarfieldMinusGarfield;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
-sub register {
-    shift->SUPER::register
-      ( { name    => "Garfield minus Garfield",
-	  url     => "http://garfieldminusgarfield.net/",
-	  pat     =>
+our $name    = "Garfield minus Garfield";
+our $url     = "http://garfieldminusgarfield.net/";
+our $pattern =
 	    qr{ <div \s+
-		class="photo"> \s+
+		class="photo"> \s*
 		<a \s+ href=".*?"> \s*
 		<img \s+
 		 src="(?<url>http://.*?\.media\.tumblr\.com/
@@ -23,9 +21,7 @@ sub register {
 		 (?<image>.*?\.\w+))" \s+
 	         alt=".*?"/> \s*
 		 </a>
-	      }six,
-	} );
-}
+	      }six;
 
 # Important: Return the package name!
 __PACKAGE__;
