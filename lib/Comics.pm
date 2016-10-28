@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Oct 27 15:42:08 2016
-# Update Count    : 300
+# Last Modified On: Fri Oct 28 10:04:38 2016
+# Update Count    : 303
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.09";
+our $VERSION = "0.10";
 
 package main;
 
@@ -169,11 +169,16 @@ sub load_plugins {
 	next unless $m =~ /^[0-9A-Z].*\.pm$/;
 	$stats->{loaded}++;
 	next unless $m =~ $pluginfilter;
+	next if $m eq 'Base.pm';
 
 	debug("Loading $m...");
-	my $pkg = eval { require "Comics/Plugin/$m" };
-	die("Comics::Plugin::$m: $@\n") unless $pkg;
-	next unless $pkg =~ /^Comics::Plugin::/;
+	$m =~ s/\.pm$//;
+	my $pkg = eval { require "Comics/Plugin/$m.pm" };
+	die("Comics/Plugin/$m.pm: $@\n") unless $pkg;
+	unless ( $pkg eq "Comics::Plugin::$m" ) {
+	    warn("Skipped $m.pm (defines $pkg, should be Comics::Plugin::$m)\n");
+	    next;
+	}
 	my $comic = $pkg->register;
 	next unless $comic;
 
