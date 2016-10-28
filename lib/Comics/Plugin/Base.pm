@@ -56,9 +56,25 @@ The tag is used to generate file names for images and HTML fragments.
 
 sub register {
     my ( $pkg, $init ) = @_;
+
+    # API 1.1 - fill %init with package variables.
+    for ( qw( name tag path url pattern patterns ) ) {
+	no strict 'refs';
+	next unless defined ${$pkg."::"}{$_};
+	my $dst = $_;
+	$dst = 'pat' if $_ eq 'pattern';
+	if ( $_ eq 'patterns' ) {
+	    $init->{pats} ||= [ @{${$pkg."::"}{$_}} ];
+	}
+	else {
+	    $init->{$dst} ||= ${${$pkg."::"}{$_}};
+	}
+    }
+
     my $self = { %$init };
     bless $self, $pkg;
     $self->{tag} ||= $self->tag_from_name;
+
     return $self;
 }
 

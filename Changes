@@ -1,9 +1,13 @@
 Revision history for Comics
 
-0.10	2016-10-xx
+0.10	2016-10-28
 
+	New plugin API. Much, much (yes, much) easier.
+	See Sigmund for	details.
+	
 	Add comics DirkJan.
 	Fix naming problem with the Soopah plugins.
+	Fix naming problem with Glasbergen and TheJoyOfTech plugins.
 
 0.09	2016-10-27
 
