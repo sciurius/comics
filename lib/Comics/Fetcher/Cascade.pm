@@ -7,7 +7,7 @@ use Carp;
 
 package Comics::Fetcher::Cascade;
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 =head1 NAME
 
@@ -18,16 +18,14 @@ Comics::Fetcher::Single -- Cascading url grabber
   package Comics::Plugin::Sigmund;
   use parent qw(Comics::Fetcher::Cascade);
 
-  sub register {
-      shift->SUPER::register
-	( { name    => "Sigmund",
-	    url     => "http://www.sigmund.nl/",
-	    pats    => [ qr{ ... (?<url>...) ... },
-                         qr{ ... (?<url>...) ... },
-                         ...
-                         qr{ ... (?<url>...) ... } ],
-	  } );
-  }
+  our $name    = "Sigmund";
+  our $url     = "http://www.sigmund.nl/";
+  our @patterns = ( [ qr{ ... (?<url>...) ... },
+                      qr{ ... (?<url>...) ... },
+                      ...
+                      qr{ ... (?<url>...) ... } ],
+                  );
+
   # Return the package name.
   __PACKAGE__;
 
@@ -39,15 +37,15 @@ pattern is applied to the fetched page and must define the url for the
 next page as a named capture. The process is repeated, and the final
 pattern has to provide the final url and image name.
 
-The Fetcher requires the common arguments:
+The Fetcher requires the common package variables:
 
 =over 8
 
-=item name
+=item $name
 
 The full name of this comic, e.g. "Fokke en Sukke".
 
-=item url
+=item $url
 
 The url of this comic's starting (i.e. home) page.
 
@@ -55,32 +53,32 @@ The url of this comic's starting (i.e. home) page.
 
 Fetcher specific arguments:
 
-This Fetcher requires either C<path> (direct URL fetch), C<pat>
-(single fetch), or C<pats> (cascading fetch).
+This Fetcher requires either C<$path> (direct URL fetch), C<$pattern>
+(single fetch), or C<@patterns> (cascading fetch).
 
 =over 8
 
-=item path
+=item $path
 
 The URL of the desired image.
 
 If I<path> is not an absolute URL, it will be interpreted relative to
 the I<url>.
 
-=item pat
+=item $pattern
 
 A pattern to locate the image URL from the starting page.
 
-=item pats
+=item @patterns
 
-An array ref with patterns to locate the image URL.
+An array with patterns to locate the image URL.
 
 When a pattern matches, it must define the named capture C<url>, which
 points to the page to be loaded and used for the next pattern.
 
 =back
 
-The final pattern may additionally define:
+Any of the patterns may additionally define:
 
 =over 8
 
@@ -130,7 +128,7 @@ sub fetch {
 	    unless ( $data =~ $pat ) {
 		$self->{fail} = "No match", return if $self->{optional};
 		# Save a copy of the failed data.
-		save_html( ".$tag.html", $data ) if $::debugging();
+		save_html( ".$tag.html", $data ) if ::debugging();
 		die("FAIL: pattern $pix not found");
 	    }
 

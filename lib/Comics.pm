@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Oct 28 22:07:06 2016
-# Update Count    : 309
+# Last Modified On: Sat Oct 29 09:46:39 2016
+# Update Count    : 312
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.10";
+our $VERSION = "0.11";
 
 package main;
 
@@ -146,7 +146,6 @@ sub get_state {
 	if ( $refresh ) {
 	    delete( $_->{md5} )
 	      foreach values( %{ $state->{comics} } );
-	    use Data::Dumper; $Data::Dumper::indent=1; warn(Dumper($state));
 	}
     }
     else {
@@ -646,7 +645,7 @@ sub get {
 	    exit;
 	}
 	last if $res->status_line !~ /^5/; # not temp fail
-	print STDERR "Retry...";
+	print STDERR "Retry..." if $verbose;
 	sleep $sleep;
 	$sleep += $sleep;
     }
