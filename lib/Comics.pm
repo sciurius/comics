@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Oct 29 09:46:39 2016
-# Update Count    : 312
+# Last Modified On: Sun Oct 30 00:17:50 2016
+# Update Count    : 314
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -174,7 +174,7 @@ sub load_plugins {
     while ( my $m = readdir($dh) ) {
 	next unless $m =~ /^[0-9A-Z].*\.pm$/;
 	$stats->{loaded}++;
-	next unless $m =~ $pluginfilter;
+	$stats->{excluded}++, next unless $m =~ $pluginfilter;
 	next if $m eq 'Base.pm';
 
 	debug("Loading $m...");
@@ -386,8 +386,8 @@ sub statmsg {
     my $uptodate = $stats->{uptodate};
     my $fail = $stats->{fail};
     my $disabled = $stats->{disabled};
+    my $excluded = $stats->{excluded};
     my $new = $stats->{tally} - $stats->{uptodate} - $stats->{fail};
-    my $excluded = $loaded - $uptodate - $fail - $disabled;
     my $res = "Number of comics = $loaded (".
       "$new new, " .
 	"$uptodate uptodate";
