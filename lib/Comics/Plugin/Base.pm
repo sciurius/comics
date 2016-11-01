@@ -58,6 +58,7 @@ sub register {
     my ( $pkg, $init ) = @_;
 
     # API 1.1 - fill %init with package variables.
+    #### TODO: See code at __END__
     for ( qw( name tag path url pattern patterns disabled ) ) {
 	no strict 'refs';
 	next unless defined ${$pkg."::"}{$_};
@@ -148,3 +149,23 @@ sub tag_from_name {
 }
 
 1;
+
+__END__
+
+    my %stash = do { no strict 'refs'; %{"${packageName}::"} };
+    # Now %stash is the symbol table.
+    # Iterate through the symbol table, which contains glob values
+    # indexed by symbol names.
+    while (my ($var, $glob) = each %stash) {
+        print "$var ======= ", *{$glob}{NAME}, " ========= \n";
+        if (defined ${*{$glob}{SCALAR}} ) {
+            print "\t \$$var ", ${*{$glob}{SCALAR}}, " \n";
+        }
+        if ( defined *{$glob}{ARRAY} ) {
+            print "\t \@$var ", @{*{$glob}{ARRAY}}, "\n";
+        }
+        if ( defined *{$glob}{HASH} ) {
+	    local $, = " ";
+            print "\t \%$var", %{*{$glob}{HASH}}, " \n";
+        }
+     }
