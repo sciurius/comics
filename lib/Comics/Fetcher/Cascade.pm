@@ -7,7 +7,7 @@ use Carp;
 
 package Comics::Fetcher::Cascade;
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 =head1 NAME
 
@@ -128,7 +128,7 @@ sub fetch {
 	    unless ( $data =~ $pat ) {
 		$self->{fail} = "No match", return if $self->{optional};
 		# Save a copy of the failed data.
-		save_html( ".$tag.html", $data ) if ::debugging();
+		$self->save_html( ".$tag.html", $data ) if ::debugging();
 		die("FAIL: pattern $pix not found");
 	    }
 
@@ -155,6 +155,7 @@ sub fetch {
     ::debug("Fetching image $url");
     my $res = $::ua->get($url);
     unless ( $res->is_success ) {
+	$state->{fail} = $res->status_line;
 	die("FAIL (image): ", $state->{fail});
     }
 
