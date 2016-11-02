@@ -10,6 +10,7 @@ lib/Comics/Plugin/AmazingSuperPowersSecretToon.pm
 lib/Comics/Plugin/APOKALIPS.pm
 lib/Comics/Plugin/ASofterWorld.pm
 lib/Comics/Plugin/Base.pm
+lib/Comics/Plugin/Ben.pm
 lib/Comics/Plugin/Buttersafe.pm
 lib/Comics/Plugin/CalvinAndHobbes.pm
 lib/Comics/Plugin/CommitStrip.pm
@@ -52,6 +53,7 @@ lib/Comics/Plugin/PlayerVsPlayer.pm
 lib/Comics/Plugin/QuantumVibe.pm
 lib/Comics/Plugin/QuestionableContent.pm
 lib/Comics/Plugin/RedMeat.pm
+lib/Comics/Plugin/RedPanels.pm
 lib/Comics/Plugin/Rubes.pm
 lib/Comics/Plugin/S1ngle.pm
 lib/Comics/Plugin/SavageChickens.pm
@@ -60,6 +62,7 @@ lib/Comics/Plugin/Sinfest.pm
 lib/Comics/Plugin/SMBC.pm
 lib/Comics/Plugin/SoopahBonus.pm
 lib/Comics/Plugin/Soopah.pm
+lib/Comics/Plugin/ThatsLife.pm
 lib/Comics/Plugin/TheJoyOfTech.pm
 lib/Comics/Plugin/TheMinistryOfAbnormality.pm
 lib/Comics/Plugin/TheWarehouse.pm

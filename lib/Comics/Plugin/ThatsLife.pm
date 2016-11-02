@@ -3,18 +3,18 @@
 use strict;
 use warnings;
 
-package Comics::Plugin::EEK;
+package Comics::Plugin::ThatsLife;
 
-# EEK! is on GoComics, but doesn't have small/large images.
+# That's Life is on GoComics, but doesn't have small/large images.
 
 use parent qw(Comics::Fetcher::Single);
 
 our $VERSION = "0.02";
 
-our $name    = "EEK!";
-our $url     = "http://www.gocomics.com/eek/";
+our $name    = "That's Life";
+our $url     = "http://www.gocomics.com/thats-life/";
 our $pattern =
-	  qr{ <img \s+
+ 	  qr{ <img \s+
 	       alt="(?<alt>[^"]+)" \s+
 	       class="strip" \s+
 	       src="(?<url>http://assets.amuniversal.com/
