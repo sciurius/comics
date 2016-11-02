@@ -1,10 +1,11 @@
 Revision history for Comics
 
-0.11	2016-11-xx
+0.11	2016-11-02
 
 	Tags are now derived from the package name instead of the
 	comics name. This should not matter much.
 	Internal changes to the API. This should not matter much either.
+	Add comics Ben and RedPanels.
 
 0.10	2016-10-28
 

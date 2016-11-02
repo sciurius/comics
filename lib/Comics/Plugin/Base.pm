@@ -19,7 +19,7 @@ The Plugin Base class provides tools for Plugins.
 
 =cut
 
-our $VERSION = "0.05";
+our $VERSION = "0.06";
 
 =head1 CONSTRUCTOR
 
@@ -30,6 +30,10 @@ Registers the plugin to the aggregator.
 The method takes a hash ref with arguments. What arguments are
 possible depends on the plugin's Fetcher type. See the documentation
 of the Fetchers for more info.
+
+As of API 1.1, the preferred way of specifying the data is by using
+package variables. These will be transferred to the hash using
+introspection.
 
 Common arguments are:
 
@@ -58,21 +62,26 @@ sub register {
     my ( $pkg, $init ) = @_;
 
     # API 1.0 - change to new naming.
-    $init->{pattern} = delete $init->{pat};
+    $init->{pattern}  = delete $init->{pat};
     $init->{patterns} = delete $init->{pats};
 
     # API 1.1 - fill %init with package variables.
-    #### TODO: See code at __END__
-    for ( qw( name tag path url pattern patterns disabled ) ) {
-	no strict 'refs';
-	next unless defined ${$pkg."::"}{$_};
-	my $dst = $_;
-	if ( $_ eq 'patterns' ) {
-	    $init->{patterns} ||= [ @{${$pkg."::"}{$_}} ];
-	}
-	else {
-	    $init->{$dst} ||= ${${$pkg."::"}{$_}};
-	}
+    my %stash = do { no strict 'refs'; %{"${pkg}::"} };
+    # Iterate through the symbol table, which contains glob values
+    # indexed by symbol names.
+    while ( my ( $var, $glob ) = each(%stash) ) {
+        if (defined ${*{$glob}{SCALAR}} ) {
+	    # Copy value.
+            $init->{$var} = ${*{$glob}{SCALAR}};
+        }
+        if ( defined *{$glob}{ARRAY} ) {
+	    # Copy ref.
+            $init->{$var} = *{$glob}{ARRAY};
+        }
+        if ( defined *{$glob}{HASH} ) {
+	    # Copy ref.
+            $init->{$var} = *{$glob}{HASH};
+        }
     }
 
     my $self = { %$init };
@@ -151,23 +160,3 @@ sub tag_from_package {
 }
 
 1;
-
-__END__
-
-    my %stash = do { no strict 'refs'; %{"${packageName}::"} };
-    # Now %stash is the symbol table.
-    # Iterate through the symbol table, which contains glob values
-    # indexed by symbol names.
-    while (my ($var, $glob) = each %stash) {
-        print "$var ======= ", *{$glob}{NAME}, " ========= \n";
-        if (defined ${*{$glob}{SCALAR}} ) {
-            print "\t \$$var ", ${*{$glob}{SCALAR}}, " \n";
-        }
-        if ( defined *{$glob}{ARRAY} ) {
-            print "\t \@$var ", @{*{$glob}{ARRAY}}, "\n";
-        }
-        if ( defined *{$glob}{HASH} ) {
-	    local $, = " ";
-            print "\t \%$var", %{*{$glob}{HASH}}, " \n";
-        }
-     }
