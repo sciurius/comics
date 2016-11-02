@@ -7,14 +7,12 @@ package Comics::Plugin::CommitStrip;
 
 use parent qw(Comics::Fetcher::Cascade);
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
-sub register {
-    shift->SUPER::register
-      ( { name    => "CommitStrip",
-	  url     => "http://www.commitstrip.com/en/",
-	  pat     =>
-	  [ qr{ <meta \s+
+our $name     = "CommitStrip";
+our $url      = "http://www.commitstrip.com/en/";
+our @patterns =
+	  ( qr{ <meta \s+
 		property="og:url" \s+
 		content="(?<url>.*?)"/>
 	      }x,
@@ -27,9 +25,7 @@ sub register {
 		height="\d+" \s+
 		class="alignnone \s+ size-full.*?" \s+ />
 	      }x
-	  ],
-	} );
-}
+	  );
 
 # Important: Return the package name!
 __PACKAGE__;

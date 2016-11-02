@@ -19,7 +19,7 @@ The Plugin Base class provides tools for Plugins.
 
 =cut
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 =head1 CONSTRUCTOR
 
@@ -57,15 +57,18 @@ The tag is used to generate file names for images and HTML fragments.
 sub register {
     my ( $pkg, $init ) = @_;
 
+    # API 1.0 - change to new naming.
+    $init->{pattern} = delete $init->{pat};
+    $init->{patterns} = delete $init->{pats};
+
     # API 1.1 - fill %init with package variables.
     #### TODO: See code at __END__
     for ( qw( name tag path url pattern patterns disabled ) ) {
 	no strict 'refs';
 	next unless defined ${$pkg."::"}{$_};
 	my $dst = $_;
-	$dst = 'pat' if $_ eq 'pattern';
 	if ( $_ eq 'patterns' ) {
-	    $init->{pats} ||= [ @{${$pkg."::"}{$_}} ];
+	    $init->{patterns} ||= [ @{${$pkg."::"}{$_}} ];
 	}
 	else {
 	    $init->{$dst} ||= ${${$pkg."::"}{$_}};
@@ -74,7 +77,7 @@ sub register {
 
     my $self = { %$init };
     bless $self, $pkg;
-    $self->{tag} ||= $self->tag_from_name;
+    $self->{tag} ||= $self->tag_from_package;
 
     return $self;
 }
@@ -141,10 +144,9 @@ Generates a tag (identifier) from the name of the plugin.
 
 =cut
 
-sub tag_from_name {
+sub tag_from_package {
     my $self = shift;
-    my $tag = lc($self->{name});
-    $tag =~ s/\W//g;
+    my $tag = lc(ref($self) =~ s/^.*:://r);
     return $tag;
 }
 

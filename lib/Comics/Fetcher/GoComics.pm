@@ -54,7 +54,7 @@ Fetcher specific arguments:
 
 =cut
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 sub register {
     my ( $pkg, $init ) = @_;
@@ -67,7 +67,7 @@ sub register {
     }
 
     # Add the standard pattern for GoComics comics.
-    $self->{pat} =
+    $self->{pattern} =
       qr{ <img \s+
 	  alt="(?<alt>[^"]+)" \s+
 	  class="strip" \s+

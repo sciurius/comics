@@ -7,7 +7,7 @@ use Carp;
 
 package Comics::Fetcher::Cascade;
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 =head1 NAME
 
@@ -99,7 +99,7 @@ use parent qw(Comics::Fetcher::Base);
 sub fetch {
     my ( $self ) = @_;
     my $state = $self->{state};
-    my $pats  = $self->{pats} || $self->{pat};
+    my $pats  = $self->{patterns} || [ $self->{pattern} ];
     my $name  = $self->{name};
     my $url   = $self->{url};
     my $tag   = $self->{tag};
@@ -113,7 +113,6 @@ sub fetch {
     else {
 	my $pix = 0;
 	my $data;
-	$pats = [ $pats ] unless eval { @$pats };
 	foreach my $pat ( @$pats ) {
 	    $pix++;
 
