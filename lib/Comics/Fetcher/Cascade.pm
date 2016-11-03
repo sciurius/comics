@@ -7,7 +7,7 @@ use Carp;
 
 package Comics::Fetcher::Cascade;
 
-our $VERSION = "0.05";
+our $VERSION = "0.06";
 
 =head1 NAME
 
@@ -107,6 +107,7 @@ sub fetch {
 
     my ( $image, $title, $alt ) = @_;
 
+    my $referer = "comics.html";
     if ( $self->{path} ) {
 	$url = $self->urlabs( $url, $self->{path} );
     }
@@ -116,7 +117,9 @@ sub fetch {
 	foreach my $pat ( @$pats ) {
 	    $pix++;
 
+	    $state->{trying} = $url;
 	    ::debug("Fetching page $pix $url");
+	    $::ua->default_header( Referer => $referer );
 	    my $res = $::ua->get($url);
 	    unless ( $res->is_success ) {
 		$self->{fail} = "Not found", return if $self->{optional};
@@ -139,6 +142,8 @@ sub fetch {
 	    # Other match data expected:
 	    $title = $+{title} if $+{title};
 	    $alt   = $+{alt}   if $+{alt};
+
+	    $referer = $url;
 	}
 
         unless ( $title ) {
@@ -152,6 +157,7 @@ sub fetch {
 
     $state->{trying} = $url;
     ::debug("Fetching image $url");
+    $::ua->default_header( Referer => $referer );
     my $res = $::ua->get($url);
     unless ( $res->is_success ) {
 	$state->{fail} = $res->status_line;
