@@ -11,7 +11,7 @@ our $VERSION = "0.06";
 
 =head1 NAME
 
-Comics::Fetcher::Single -- Cascading url grabber
+Comics::Fetcher::Cascade -- Cascading url grabber
 
 =head1 SYNOPSIS
 
