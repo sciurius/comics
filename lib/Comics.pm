@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Sun Oct 30 00:17:50 2016
-# Update Count    : 314
+# Last Modified On: Fri Nov  4 11:08:52 2016
+# Update Count    : 331
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.11";
+our $VERSION = "0.12";
 
 package main;
 
@@ -308,6 +308,14 @@ sub build {
 	warn("   $_\n") for @files;
     }
 
+    # Creat icon.
+    unless ( -s "comics.png" ) {
+	require Comics::Utils::Icon;
+	open( my $fd, '>:raw', "comics.png" );
+	print $fd Comics::Utils::Icon::icon();
+	close($fd);
+    }
+
     # Create a new index.html.
     open( my $fd, '>:utf8', "index.html" );
     preamble($fd);
@@ -364,10 +372,11 @@ EOD
 sub htmlstats {
     my ( $fd ) = @_;
     print $fd <<EOD;
-<table class="toontable" cellpadding="0" cellspacing="0">
-  <tr><td nowrap align="left" valign="top">
-        <font size="-2">Last run: @{[ "".localtime() ]} &#x2013; @{[ statmsg() ]}</font><br>
-      </td>
+<table width="100%" class="toontable" cellpadding="5" cellspacing="0">
+  <tr><td nowrap align="center">
+<p style="margin-left:5px"><img src="comics.png" width="100" height="100" alt="[Comics]" align="middle"><font size="+4"><bold>Comics</bold></font><br>
+<font size="-2">Last run: @{[ "".localtime() ]}<br>@{[ statmsg() ]}</font><br>
+</p>      </td>
   </tr>
 </table>
 EOD

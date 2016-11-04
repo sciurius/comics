@@ -1,5 +1,9 @@
 Revision history for Comics
 
+0.12	2016-11-xx
+
+	Add nice(r) heading.
+
 0.11	2016-11-02
 
 	Tags are now derived from the package name instead of the
