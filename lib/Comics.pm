@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Nov  4 11:08:52 2016
-# Update Count    : 331
+# Last Modified On: Fri Nov  4 13:47:29 2016
+# Update Count    : 333
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -338,21 +338,25 @@ sub preamble {
 <title>TOONS!</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <style type="text/css">
-    body {
-	font-family : Verdana, Arial, Helvetica, sans-serif;
-	text-align: center;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 10px;
-	margin-left: 0px;
-	font-size:12pt;
-    }
-    .toontable {
-	background-color: #eee;
-	padding: 9px;
-	margin: 18px;
-	border: 1px solid #ddd;
-    }
+body {
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    font-size:12pt;
+}
+.toontable {
+    background-color: #eee;
+    padding: 9px;
+    margin: 18px;
+    border: 1px solid #ddd;
+}
+.toonimage {
+    background-color: white;
+    border: 0px;
+}
 </style>
 </head>
 <body bgcolor='#ffffff'>
