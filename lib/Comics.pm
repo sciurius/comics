@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Nov  4 13:47:29 2016
-# Update Count    : 333
+# Last Modified On: Fri Nov  4 14:46:01 2016
+# Update Count    : 337
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -357,6 +357,10 @@ body {
     background-color: white;
     border: 0px;
 }
+a {
+    text-decoration: none;
+    color: black;
+}
 </style>
 </head>
 <body bgcolor='#ffffff'>
@@ -378,7 +382,7 @@ sub htmlstats {
     print $fd <<EOD;
 <table width="100%" class="toontable" cellpadding="5" cellspacing="0">
   <tr><td nowrap align="center">
-<p style="margin-left:5px"><img src="comics.png" width="100" height="100" alt="[Comics]" align="middle"><font size="+4"><bold>Comics</bold></font><br>
+<p style="margin-left:5px"><a href="http://johan.vromans.org/software/sw_comics.html" target="_blank"><img src="comics.png" width="100" height="100" alt="[Comics]" align="middle"><font size="+4"><bold>Comics</bold></font></a><br>
 <font size="-2">Last run: @{[ "".localtime() ]}<br>@{[ statmsg() ]}</font><br>
 </p>      </td>
   </tr>
