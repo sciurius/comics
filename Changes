@@ -1,8 +1,11 @@
 Revision history for Comics
 
-0.12	2016-11-xx
+0.12	2016-11-04
 
 	Add nice(r) heading.
+	Add white background to the images.
+	Add link to Comics web page.
+	Add MIN_PER_VERSION to Makefile.PL.
 
 0.11	2016-11-02
 
