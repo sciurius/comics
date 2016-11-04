@@ -16,7 +16,7 @@ WriteMakefile
  ABSTRACT_FROM  => $master,
  VERSION_FROM	=> $master,
  AUTHOR	        => 'Johan Vromans <jvromans@squirrel.nl>',
-
+ MIN_PERL_VERSION => 5.12.0,
  INSTALLDIRS	=> 'site',
  EXE_FILES	=> [ 'script/collect' ],
  PL_FILES	=>
