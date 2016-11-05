@@ -73,7 +73,7 @@ package Comics::Plugin::Sigmund;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 # Mandatory variables:
 #
@@ -85,9 +85,12 @@ our $url     = "http://www.sigmund.nl/";
 
 # Optional variables:
 #
-# $disabled : permanently disables this plugin. It cannot be
+# $ondemand : This plugin is initially disabled, but can be
+#             enabled via the command line.
+# $disabled : Permanently disables this plugin. It cannot be
 #             re-enabled via the command line.
-#             Useful if a site has ceased to exist.
+#             Useful if a plugin doesn't work (yet/anymore),
+#	      or the site has ceased to exist.
 
 # Other variables depend on the Fetcher.
 #

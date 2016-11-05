@@ -120,7 +120,7 @@ sub html {
 	 localtime($state->{update}) .
 	 qq{</font><br><br></td>\n} .
 	 qq{  </tr>\n  <tr><td><a href="$self->{url}?$::uuid">} .
-	 qq{<img border="0" };
+	 qq{<img class="toonimage" };
 
     # Alt and title are extracted from HTML, so they should be
     # properly escaped.

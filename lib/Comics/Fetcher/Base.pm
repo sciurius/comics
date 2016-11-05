@@ -28,7 +28,7 @@ be implemented by the derived classes.
 
 use parent qw(Comics::Plugin::Base);
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 sub fetch {
     my ( $self ) = @_;
@@ -50,7 +50,7 @@ directory.
 
 sub spoolfile {
     my ( $self, $file ) = @_;
-    File::Spec->catfile( $::spooldir, $file );
+    ::spoolfile($file);
 }
 
 use Digest::MD5 qw(md5_base64);

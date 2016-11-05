@@ -1,5 +1,12 @@
 Revision history for Comics
 
+0.13	2016-11-xx
+
+	Add 'ondemand' property for plugins that are initially
+	disabled.
+	The spool directory now defaults to <tmpdir>/Comics and will
+	be created if necessary.
+
 0.12	2016-11-04
 
 	Add nice(r) heading.

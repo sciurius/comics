@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Nov  4 14:46:01 2016
-# Update Count    : 337
+# Last Modified On: Sat Nov  5 21:31:06 2016
+# Update Count    : 346
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.12";
+our $VERSION = "0.13";
 
 package main;
 
@@ -24,6 +24,8 @@ package main;
 use strict;
 use warnings;
 use FindBin;
+use File::Spec;
+use File::Path qw();
 
 BEGIN {
     # Add private library if it exists.
@@ -42,7 +44,7 @@ my $my_name = "comics";
 use Getopt::Long 2.13;
 
 # Command line options.
-our $spooldir = $ENV{HOME} . "/tmp/gotblah/";
+my $spooldir = File::Spec->catdir( File::Spec->tmpdir, "Comics" );
 my $statefile;
 my $refresh;
 my $activate = 0;		# enable/disable
@@ -85,7 +87,11 @@ sub init {
     $verbose = 255 if $debug;
     $spooldir .= "/";
     $spooldir =~ s;/+$;/;;
-    $statefile = $spooldir . ".state.json";
+
+    File::Path::make_path( $spooldir, { verbose => 1 } )
+	unless -d $spooldir;
+
+    $statefile = spoolfile(".state.json");
 
     $pluginfilter = ".";
     if ( @ARGV ) {
@@ -190,13 +196,23 @@ sub load_plugins {
 
 	push( @plugins, $comic );
 
+	# 'disabled' means that this plugin is permanently disabled.
 	my $activate = $comic->{disabled} ? -1 : $activate;
+
+	# 'ondemand' means that this plugin is initially disabled, but
+	# can be enabled if desired.
+	if ( !$activate && $comic->{ondemand}
+	     && !exists( $state->{comics}->{$comic->{tag}} ) ) {
+	    $activate = -1;
+	}
+
 	if ( $activate > 0 ) {
 	    delete( $state->{comics}->{$comic->{tag}}->{disabled} )
 	}
 	elsif ( $activate < 0 ) {
 	    $state->{comics}->{$comic->{tag}}->{disabled} = 1;
 	}
+
 	if ( $state->{comics}->{$comic->{tag}}->{disabled} ) {
 	    $stats->{disabled}++;
 	    debug("Comics::Plugin::$m: Disabled");
@@ -204,6 +220,9 @@ sub load_plugins {
 
     }
 
+    if ( $stats->{loaded} == $stats->{excluded} ) {
+	warn( "No matching plugins found\n" );
+    }
 }
 
 sub list_plugins {
@@ -415,6 +434,11 @@ sub statmsg {
 }
 
 ################ Miscellaneous ################
+
+sub spoolfile {
+    my ( $file ) = @_;
+    File::Spec->catfile( $spooldir, $file );
+}
 
 sub uuid {
     my @chars = ( 'a'..'f', 0..9 );
@@ -636,7 +660,7 @@ sub new {
     $self->timeout(10);
     $cookie_jar ||= HTTP::Cookies->new
       (
-       file	       => "$::spooldir/.lwp_cookies.dat",
+       file	       => ::spoolfile(".lwp_cookies.dat"),
        autosave	       => 1,
        ignore_discard  => 1,
       );
