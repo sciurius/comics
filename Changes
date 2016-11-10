@@ -6,7 +6,7 @@ Revision history for Comics
 	disabled.
 	The spool directory now defaults to <tmpdir>/Comics and will
 	be created if necessary.
-	Add CSectionComics.
+	Add CSectionComics LearnToSpeakCat.
 
 0.12	2016-11-04
 

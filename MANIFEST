@@ -36,6 +36,7 @@ lib/Comics/Plugin/HaraKiri.pm
 lib/Comics/Plugin/HeinDeKort.pm
 lib/Comics/Plugin/JesusAndMo.pm
 lib/Comics/Plugin/KevinAndKell.pm
+lib/Comics/Plugin/LearnToSpeakCat.pm
 lib/Comics/Plugin/LeastICouldDo.pm
 lib/Comics/Plugin/Lectrr.pm
 lib/Comics/Plugin/LittleGamers.pm
