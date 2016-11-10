@@ -14,6 +14,7 @@ lib/Comics/Plugin/Ben.pm
 lib/Comics/Plugin/Buttersafe.pm
 lib/Comics/Plugin/CalvinAndHobbes.pm
 lib/Comics/Plugin/CommitStrip.pm
+lib/Comics/Plugin/CSectionComics.pm
 lib/Comics/Plugin/CtrlAltDel.pm
 lib/Comics/Plugin/CyanideAndHappiness.pm
 lib/Comics/Plugin/DieselSweeties.pm
