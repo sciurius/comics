@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Nov  5 21:31:06 2016
-# Update Count    : 346
+# Last Modified On: Sat Nov 12 19:34:59 2016
+# Update Count    : 347
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -319,7 +319,8 @@ sub build {
       map { $_->[0] }
 	sort { $b->[1] <=> $a->[1] }
 	  grep { $force || ! $state->{comics}->{$_->[2]}->{disabled} }
-	    map { [ $_, (stat($_))[9], s/\.\w+$//r ] }
+	    map { ( my $t = $_ ) =~ s/\.\w+$//;
+		  [ $_, (stat($_))[9], $t  ] }
 	      @files;
 
     if ( $debug > 1 ) {

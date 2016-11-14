@@ -1,12 +1,13 @@
 Revision history for Comics
 
-0.13	2016-11-xx
+0.13	2016-11-14
 
 	Add 'ondemand' property for plugins that are initially
 	disabled.
 	The spool directory now defaults to <tmpdir>/Comics and will
 	be created if necessary.
 	Add CSectionComics LearnToSpeakCat.
+	Lower Perl requirement to 5.12.
 
 0.12	2016-11-04
 

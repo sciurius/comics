@@ -155,7 +155,8 @@ Generates a tag (identifier) from the name of the plugin.
 
 sub tag_from_package {
     my $self = shift;
-    my $tag = lc(ref($self) =~ s/^.*:://r);
+    my $tag = lc(ref($self));
+    $tag =~ s/^.*:://;
     return $tag;
 }
 
