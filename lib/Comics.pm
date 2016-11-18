@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Nov 12 19:34:59 2016
-# Update Count    : 347
+# Last Modified On: Fri Nov 18 13:53:25 2016
+# Update Count    : 352
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "0.13";
+our $VERSION = "0.14";
 
 package main;
 
@@ -121,7 +121,7 @@ sub main {
     # Non-aggregating command: enable/disable.
     if ( $activate ) {
 	save_state();
-	return;
+	return unless $rebuild;
     }
 
     unless ( $rebuild ) {
@@ -210,7 +210,13 @@ sub load_plugins {
 	    delete( $state->{comics}->{$comic->{tag}}->{disabled} )
 	}
 	elsif ( $activate < 0 ) {
-	    $state->{comics}->{$comic->{tag}}->{disabled} = 1;
+	    my $tag = $comic->{tag};
+	    $state->{comics}->{$tag}->{disabled} = 1;
+	    delete( $state->{comics}->{$tag}->{md5} );
+	    for ( qw( html jpg png gif ) ) {
+		unlink( spoolfile( $tag . "." . $_ ) )
+		  and $rebuild++;
+	    }
 	}
 
 	if ( $state->{comics}->{$comic->{tag}}->{disabled} ) {
@@ -384,6 +390,7 @@ a {
 </style>
 </head>
 <body bgcolor='#ffffff'>
+<a name="top"></a>
 <div align="center">
 EOD
 }
