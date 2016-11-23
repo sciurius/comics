@@ -7,24 +7,18 @@ package Comics::Plugin::TheJoyOfTech;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
-sub register {
-    shift->SUPER::register
-      ( { name    => "The Joy of Tech",
-	  url     => "http://www.joyoftech.com/joyoftech/",
-	  pat	  =>
+our $name    = "The Joy of Tech";
+our $url     = "http://www.joyoftech.com/joyoftech/";
+our $pattern =
 	    qr{ <img \s+
 		src="(?<url>joyimages/
 		  (?<image>[^./]+\.\w+))" \s+
 	        alt="(?<alt>.*?)" \s+
 		width="\d+" \s+
-		height="\d+" \s+
-		border="\d+" \s*
-		>
-	      }x,
-	} );
-}
+		height="\d+" \s*
+	      }x;
 
 # Important: Return the package name!
 __PACKAGE__;
