@@ -1,5 +1,12 @@
 Revision history for Comics
 
+0.14	2016-xx-xx
+
+	Defeat erroneous image caching.
+	Use HTTP header ETag to avoid unneccessary image fetching.
+	Remove plugin data and files when disabling a plugin.
+	(JoyOfTech, CSectionComics) Fix pattern.
+
 0.13	2016-11-14
 
 	Add 'ondemand' property for plugins that are initially

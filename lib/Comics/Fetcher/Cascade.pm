@@ -155,12 +155,19 @@ sub fetch {
     $alt ||= $tag;
     $title ||= $name;
 
+    my $etag = $state->{etag} || "None";
     $state->{trying} = $url;
-    ::debug("Fetching image $url");
+    ::debug("Fetching image $url (ETag: $etag)");
     $::ua->default_header( Referer => $referer );
+    $::ua->default_header( "If-None-Match" => $etag );
     my $res = $::ua->get($url);
     unless ( $res->is_success ) {
 	$state->{fail} = $res->status_line;
+	if ( $state->{fail} =~ /304 Not Modified/ ) {
+	    ::debug("Not fetching: Up to date $url");
+	    $::stats->{uptodate}++;
+	    return $state;
+	}
 	die("FAIL (image): ", $state->{fail});
     }
 
@@ -169,7 +176,7 @@ sub fetch {
     if ( !$data or !($info = Image::Info::image_info(\$data)) ) {
 	die("FAIL: image no data");
     }
-
+    $state->{etag} = $res->header('etag');
     my $md5 = Digest::MD5::md5_base64($data);
     if ( $state->{md5} and $state->{md5} eq $md5 ) {
 	::debug("Fetching: Up to date $url");
@@ -177,7 +184,13 @@ sub fetch {
 	return $state;
     }
 
-    my $img = $tag . "." . $info->{file_ext};
+    if ( my $oldimg = $self->spoolfile( $state->{c_img} ) ) {
+	unlink($oldimg)
+	  && ::debug("Removed: $oldimg");
+    }
+
+    my $img = sprintf( "%s-%06x.%s", $tag,
+		       int(rand(0x1000000)), $info->{file_ext} );
     $self->{c_width}  = $info->{width};
     $self->{c_height} = $info->{height};
 
