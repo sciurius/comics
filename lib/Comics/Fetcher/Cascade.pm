@@ -184,15 +184,16 @@ sub fetch {
 	return $state;
     }
 
-    if ( my $oldimg = $self->spoolfile( $state->{c_img} ) ) {
+    if ( $state->{c_img}
+	 and my $oldimg = $self->spoolfile( $state->{c_img} ) ) {
 	unlink($oldimg)
 	  && ::debug("Removed: $oldimg");
     }
 
     my $img = sprintf( "%s-%06x.%s", $tag,
 		       int(rand(0x1000000)), $info->{file_ext} );
-    $self->{c_width}  = $info->{width};
-    $self->{c_height} = $info->{height};
+    $state->{c_width}  = $info->{width};
+    $state->{c_height} = $info->{height};
 
     $self->save_image( $img, \$data );
 
@@ -200,9 +201,9 @@ sub fetch {
     $state->{md5} = $md5;
     delete( $state->{trying} );
 
-    $self->{c_alt} = $alt;
-    $self->{c_title} = $title;
-    $self->{c_img} = $img;
+    $state->{c_alt} = $alt;
+    $state->{c_title} = $title;
+    $state->{c_img} = $img;
 
     my $html = "$tag.html";
     $self->save_html($html);

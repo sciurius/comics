@@ -103,12 +103,12 @@ sub html {
     my ( $self ) = @_;
     my $state = $self->{state};
 
-    my $w = $self->{c_width};
-    my $h = $self->{c_height};
+    my $w = $state->{c_width};
+    my $h = $state->{c_height};
     if ( $h && $w ) {
 	if ( $w > 1024 ) {
 	    $w = 1024;
-	    $h = int( $h * $w/$self->{c_width} );
+	    $h = int( $h * $w/$state->{c_width} );
 	}
     }
 
@@ -124,14 +124,14 @@ sub html {
 
     # Alt and title are extracted from HTML, so they should be
     # properly escaped.
-    $res .= qq{alt="} . $self->{c_alt} . qq{" }
-      if $self->{c_alt};
-    $res .= qq{title="} . $self->{c_title} . qq{" }
-      if $self->{c_title};
+    $res .= qq{alt="} . $state->{c_alt} . qq{" }
+      if $state->{c_alt};
+    $res .= qq{title="} . $state->{c_title} . qq{" }
+      if $state->{c_title};
     $res .= qq{width="$w" height="$h" }
       if $w && $h;
 
-    $res .= qq{src="$self->{c_img}"></a></td>\n  </tr>\n</table>\n};
+    $res .= qq{src="$state->{c_img}"></a></td>\n  </tr>\n</table>\n};
 
     return $res;
 }

@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Nov 18 13:53:25 2016
-# Update Count    : 352
+# Last Modified On: Fri Nov 25 10:59:22 2016
+# Update Count    : 353
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -361,7 +361,7 @@ sub preamble {
     print $fd <<EOD;
 <html>
 <head>
-<title>TOONS!</title>
+<title>Comics!</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <style type="text/css">
 body {
@@ -410,7 +410,7 @@ sub htmlstats {
 <table width="100%" class="toontable" cellpadding="5" cellspacing="0">
   <tr><td nowrap align="center">
 <p style="margin-left:5px"><a href="http://johan.vromans.org/software/sw_comics.html" target="_blank"><img src="comics.png" width="100" height="100" alt="[Comics]" align="middle"><font size="+4"><bold>Comics</bold></font></a><br>
-<font size="-2">Last run: @{[ "".localtime() ]}<br>@{[ statmsg() ]}</font><br>
+<font size="-2">Comics $VERSION, last run: @{[ "".localtime() ]}<br>@{[ statmsg() ]}</font><br>
 </p>      </td>
   </tr>
 </table>
