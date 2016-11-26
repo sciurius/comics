@@ -12,6 +12,7 @@ BEGIN {
 	  Comics::Fetcher::Single
 	  Comics::Plugin::Base
 	  Comics::Plugin::Sigmund
+	  Comics::Utils::Icon
        );
 }
 

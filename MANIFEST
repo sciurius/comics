@@ -80,6 +80,7 @@ lib/Comics/Fetcher/Cascade.pm
 lib/Comics/Fetcher/Direct.pm
 lib/Comics/Fetcher/GoComics.pm
 lib/Comics/Fetcher/Single.pm
+lib/Comics/Utils/Icon.pm
 script/collect.pl
 script/pp.PL
 t/00-load.t
