@@ -1,7 +1,8 @@
 Revision history for Comics
 
-0.14	2016-xx-xx
+1.00	2016-11-26
 
+	Release 1.00.
 	Defeat erroneous image caching.
 	Use HTTP header ETag to avoid unneccessary image fetching.
 	Remove plugin data and files when disabling a plugin.

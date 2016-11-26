@@ -7,7 +7,7 @@ package Comics::Plugin::LearnToSpeakCat;
 
 use parent qw(Comics::Fetcher::GoComics);
 
-our $VERSION = "0.01";
+our $VERSION = "1.00";
 
 our $name    = "Learn to Speak Cat";
 our $url     = "http://www.gocomics.com/learn-to-speak-cat/";

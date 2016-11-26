@@ -20,8 +20,19 @@ $HOME/Comics/spool/index.html .
 
 Feel free to fork and improve, especially add more plugins!
 
-Plugin Comics/Plugin/Sigmund.pm is fully documented and can be use as
+Plugin Comics/Plugin/Sigmund.pm is fully documented and can be used as
 a starting point to develop your own plugins.
+
+NOTES ABOUT THE PLUGINS
+
+Several plugins have version numbers 0.xx. They use an obsolete but
+still functional version of the plugin API. They will be upgraded to
+the current API when changes to the plugin are required.
+
+Many plugins are for compatilbility with the original Gotblah
+collection of comics. Some plugins are created/suggested by other
+users. The collection of distributed plugins therefore does not
+reflect my personal taste of humour.
 
 LICENSE
 

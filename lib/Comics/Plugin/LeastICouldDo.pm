@@ -7,7 +7,7 @@ package Comics::Plugin::LeastICouldDo;
 
 use parent qw(Comics::Fetcher::Cascade);
 
-our $VERSION = "0.03";
+our $VERSION = "1.00";
 
 # Current image is date formatted.
 # Unfortunately, this is not reliable (e.g., on nov 1 the image

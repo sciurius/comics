@@ -7,7 +7,7 @@ package Comics::Plugin::CSectionComics;
 
 use parent qw(Comics::Fetcher::Cascade);
 
-our $VERSION = "0.04";
+our $VERSION = "1.00";
 
 our $name    = "C-Section Comics";
 

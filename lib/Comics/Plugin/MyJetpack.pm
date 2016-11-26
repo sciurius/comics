@@ -7,7 +7,7 @@ package Comics::Plugin::MyJetpack;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "1.00";
 
 our $name    = "You're all just jealous of my Jetpack";
 our $url     = "http://myjetpack.tumblr.com/";

@@ -9,7 +9,7 @@ package Comics::Plugin::EEK;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "1.00";
 
 our $name    = "EEK!";
 our $url     = "http://www.gocomics.com/eek/";

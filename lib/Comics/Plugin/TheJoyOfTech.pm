@@ -7,7 +7,7 @@ package Comics::Plugin::TheJoyOfTech;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.03";
+our $VERSION = "1.00";
 
 our $name    = "The Joy of Tech";
 our $url     = "http://www.joyoftech.com/joyoftech/";

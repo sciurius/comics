@@ -73,7 +73,7 @@ package Comics::Plugin::Sigmund;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.04";
+our $VERSION = "1.00";
 
 # Mandatory variables:
 #

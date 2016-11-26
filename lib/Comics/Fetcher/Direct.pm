@@ -19,6 +19,6 @@ This is just a wrapper around L<Comics::Fetcher::Cascade>.
 
 =cut
 
-our $VERSION = "0.03";
+our $VERSION = "1.00";
 
 1;

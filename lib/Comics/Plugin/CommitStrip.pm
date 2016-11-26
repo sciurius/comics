@@ -7,7 +7,7 @@ package Comics::Plugin::CommitStrip;
 
 use parent qw(Comics::Fetcher::Cascade);
 
-our $VERSION = "0.02";
+our $VERSION = "1.00";
 
 our $name     = "CommitStrip";
 our $url      = "http://www.commitstrip.com/en/";

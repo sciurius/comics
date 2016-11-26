@@ -28,7 +28,7 @@ be implemented by the derived classes.
 
 use parent qw(Comics::Plugin::Base);
 
-our $VERSION = "0.04";
+our $VERSION = "1.00";
 
 sub fetch {
     my ( $self ) = @_;

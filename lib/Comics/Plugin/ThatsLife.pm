@@ -9,7 +9,7 @@ package Comics::Plugin::ThatsLife;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "1.00";
 
 our $name    = "That's Life";
 our $url     = "http://www.gocomics.com/thats-life/";

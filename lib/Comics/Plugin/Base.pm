@@ -19,7 +19,7 @@ The Plugin Base class provides tools for Plugins.
 
 =cut
 
-our $VERSION = "0.06";
+our $VERSION = "1.00";
 
 =head1 CONSTRUCTOR
 

@@ -7,7 +7,7 @@ package Comics::Plugin::GarfieldMinusGarfield;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "1.00";
 
 our $name    = "Garfield minus Garfield";
 our $url     = "http://garfieldminusgarfield.net/";

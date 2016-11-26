@@ -7,7 +7,7 @@ use Carp;
 
 package Comics::Fetcher::Cascade;
 
-our $VERSION = "0.06";
+our $VERSION = "1.00";
 
 =head1 NAME
 

@@ -7,7 +7,7 @@ package Comics::Utils::Icon;
 
 use MIME::Base64;
 
-our $VERSION = "0.02";
+our $VERSION = "1.00";
 
 sub icon {
     # <a href="http://cliparts.co">Clip art image by Cliparts.co</a>
