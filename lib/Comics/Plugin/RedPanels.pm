@@ -16,7 +16,7 @@ our $pattern =
   qr{ <img \s+
        (?: id='comicImg' \s+ )?
        src='(?<url>http://redpanels.com/comics/(?<image>.*?\.\w+))' \s+
-                    alt  = '(?<alt>.*?)' \s*
+       alt='(?<alt>.*?)' \s*
       >
     }six;
 
