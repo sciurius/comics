@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Nov 26 19:57:41 2016
-# Update Count    : 354
+# Last Modified On: Thu Jan 12 12:53:55 2017
+# Update Count    : 359
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 package main;
 
@@ -195,6 +195,7 @@ sub load_plugins {
 	next unless $comic;
 
 	push( @plugins, $comic );
+	my $tag = $comic->{tag};
 
 	# 'disabled' means that this plugin is permanently disabled.
 	my $activate = $comic->{disabled} ? -1 : $activate;
@@ -202,24 +203,30 @@ sub load_plugins {
 	# 'ondemand' means that this plugin is initially disabled, but
 	# can be enabled if desired.
 	if ( !$activate && $comic->{ondemand}
-	     && !exists( $state->{comics}->{$comic->{tag}} ) ) {
+	     && !exists( $state->{comics}->{$tag} ) ) {
 	    $activate = -1;
 	}
 
 	if ( $activate > 0 ) {
-	    delete( $state->{comics}->{$comic->{tag}}->{disabled} )
+	    delete( $state->{comics}->{$tag}->{disabled} )
 	}
 	elsif ( $activate < 0 ) {
-	    my $tag = $comic->{tag};
 	    $state->{comics}->{$tag}->{disabled} = 1;
 	    delete( $state->{comics}->{$tag}->{md5} );
 	    for ( qw( html jpg png gif ) ) {
-		unlink( spoolfile( $tag . "." . $_ ) )
-		  and $rebuild++;
+		next unless unlink( spoolfile( $tag . "." . $_ ) );
+		debug( "Removed: ", spoolfile( $tag . "." . $_ ) );
+		$rebuild++;
+	    }
+	    for ( $state->{comics}->{$tag}->{c_img} ) {
+		next unless defined;
+		next unless unlink( spoolfile($_) );
+		debug( "Removed: ", spoolfile($_) );
+		$rebuild++;
 	    }
 	}
 
-	if ( $state->{comics}->{$comic->{tag}}->{disabled} ) {
+	if ( $state->{comics}->{$tag}->{disabled} ) {
 	    $stats->{disabled}++;
 	    debug("Comics::Plugin::$m: Disabled");
 	}
