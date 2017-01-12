@@ -166,6 +166,7 @@ sub fetch {
 	if ( $state->{fail} =~ /304 Not Modified/ ) {
 	    ::debug("Not fetching: Up to date $url");
 	    $::stats->{uptodate}++;
+	    delete( $state->{trying} );
 	    return $state;
 	}
 	die("FAIL (image): ", $state->{fail});
@@ -181,6 +182,7 @@ sub fetch {
     if ( $state->{md5} and $state->{md5} eq $md5 ) {
 	::debug("Fetching: Up to date $url");
 	$::stats->{uptodate}++;
+	delete( $state->{trying} );
 	return $state;
     }
 
@@ -190,6 +192,10 @@ sub fetch {
 	  && ::debug("Removed: $oldimg");
     }
 
+    unless ( $tag && $info->{file_ext} ) {
+	use Data::Dumper;
+	warn($tag, ": ", Dumper($info));
+    }
     my $img = sprintf( "%s-%06x.%s", $tag,
 		       int(rand(0x1000000)), $info->{file_ext} );
     $state->{c_width}  = $info->{width};
