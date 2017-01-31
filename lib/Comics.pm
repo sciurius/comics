@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Jan 12 13:24:16 2017
-# Update Count    : 360
+# Last Modified On: Tue Jan 31 07:48:46 2017
+# Update Count    : 362
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "1.02";
+our $VERSION = "1.03";
 
 package main;
 
@@ -179,9 +179,9 @@ sub load_plugins {
 
     while ( my $m = readdir($dh) ) {
 	next unless $m =~ /^[0-9A-Z].*\.pm$/;
+	next if $m eq 'Base.pm';
 	$stats->{loaded}++;
 	$stats->{excluded}++, next unless $m =~ $pluginfilter;
-	next if $m eq 'Base.pm';
 
 	debug("Loading $m...");
 	$m =~ s/\.pm$//;
