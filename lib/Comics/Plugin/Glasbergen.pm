@@ -7,21 +7,17 @@ package Comics::Plugin::Glasbergen;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "1.01";
 
-sub register {
-    shift->SUPER::register
-      ( { name    => "Glasbergen",
-	  url     => "http://www.glasbergen.com",
-	  pat	  =>
+our $name    = "Glasbergen";
+our $url     = "http://www.glasbergen.com";
+our $pattern =
 	    qr{ <img \s+ class="ngg-singlepic" \s+
-		title="(?<title>.*?)" \s+
-		alt="(?<alt>.*?)" \s+
+		(?: title="(?<title>.*?)" \s+ )?
+		(?: alt="(?<alt>.*?)" \s+ )?
 		src="(?<url>http://www.glasbergen.com/wp-content/
-		gallery/cartoons/(?<image>.+?))" \s* />
-	      }x,
-	 } );
-}
+		gallery/cartoons/(?<image>.+?))" \s*
+	      }x;
 
 # Important: Return the package name!
 __PACKAGE__;

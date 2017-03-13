@@ -1,5 +1,13 @@
 Revision history for Comics
 
+1.04	2017-03-11
+
+	Fix regexp for Glasbergen, AMultiverse.
+
+1.03	2017-01-31
+
+	Fix tally of comics in statistics.
+
 1.02	2017-01-12
 
 	Release 1.02.
