@@ -13,15 +13,13 @@ sub register {
 
     shift->SUPER::register
       ( { name    => "CTRL+ALT+DEL",
-	  url     => "http://www.cad-comic.com/cad/",
+	  url     => "http://www.cad-comic.com/",
 	  pat     =>
-	    qr{ <a \s+ href="/" \s+ class="nav-next">Next</a>
-		</div> \s*
-		<img \s+
-		 src="(?<url>http://.*?\.cad-comic\.com/comics/
+	    qr{ <img \s+
+		 class="comic-display" \s+
+		 src="(?<url>http://(?:.*\.)?cad-comic\.com/
+		       wp-content/uploads/\d+/\d+/
 		      (?<image>.*?\.\w+))" \s+
-		 alt="(?<alt>.*?)" \s+
-		 title="(?<title>.*?)"
 	      }xs,
 	} );
 }
