@@ -7,13 +7,15 @@ package Comics::Plugin::TheMinistryOfAbnormality;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.01";
+our $VERSION = "1.00";
 
-sub register {
-    shift->SUPER::register
-      ( { name    => "The Ministry of Abnormality",
-	  url     => "http://www.theministryofabnormality.com/",
-	  pat     =>
+our $name    = "The Ministry of Abnormality";
+our $url     = "http://www.theministryofabnormality.com/";
+
+# CHANGED BEYOND REPAIR
+our $disabled = 1;
+
+our $pattern =
 	    qr{ <div \s+
 		 class="entry-thumb"> \s+
 		<a \s+
@@ -26,9 +28,8 @@ sub register {
 		        wp-content/uploads/\d+/\d+/
 			(?<image>.*?\.\w+))" \s+
 		 class=".*?" \s+ alt=".*?"
-	      }six,
-	} );
-}
+	      }six;
+
 
 # Important: Return the package name!
 __PACKAGE__;
