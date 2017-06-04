@@ -7,7 +7,7 @@ package Comics::Plugin::LoadingArtist;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Loading Artist";
 our $url     = "http://www.loadingartist.com/latest/";
@@ -17,7 +17,7 @@ our $pattern =
       .*?
       <div \s+ class="comic"> \s*
       <img \s+
-       src="(?<url>http://www.loadingartist.com/wp-content/uploads/
+       src="(?<url>https?://www.loadingartist.com/wp-content/uploads/
             \d+/\d+/
             (?<image>.+?\.\w+))"
     }sx;
