@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Wed Jun 21 08:20:57 2017
-# Update Count    : 368
+# Last Modified On: Wed Oct 25 14:28:02 2017
+# Update Count    : 369
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -15,7 +15,7 @@ use Carp;
 
 package Comics;
 
-our $VERSION = "1.06";
+our $VERSION = "1.07";
 
 package main;
 
