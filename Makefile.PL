@@ -49,6 +49,12 @@ WriteMakefile
     type => 'git',
    },
   },
+  no_index =>
+  {
+   file => [
+	    "lib/LWP/UserAgent/Custom.pm",
+	   ],
+  },
   'meta-spec' =>
   {
    version => '2',
