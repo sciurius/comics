@@ -42,12 +42,8 @@ WriteMakefile
   license      => "perl_5",
   resources    =>
   {
-   repository  =>
-   {
-    url  => 'git://github.com/sciurius/comics.git',
-    web  => 'http://github.com/sciurius/comics',
-    type => 'git',
-   },
+   repository => "https://github.com/sciurius/comics",
+   bugtracker => "https://github.com/sciurius/comics/issues",
   },
   no_index =>
   {
