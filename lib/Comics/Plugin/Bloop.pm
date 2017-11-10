@@ -5,21 +5,14 @@ use warnings;
 
 package Comics::Plugin::Bloop;
 
-use parent qw(Comics::Fetcher::Single);
+use parent qw(Comics::Plugin::JHall);
 
-our $VERSION = "1.01";
+our $VERSION = "1.02";
 
-our $name    = "JHall Bloop";
-our $url     = "http://jhallcomics.com/bloop/";
+our $name    = $Comics::Plugin::JHall::name . " Bloop";
+our $url     = $Comics::Plugin::JHall::url . "bloop/";
 
-our $pattern =
-  qr{ <div \s+ .*? class="image-block-wrapper \s+ .*? > \s*
-      <noscript>
-      <img \s+
-       src="(?<url>https?://static1.squarespace.com/static/
-                   .*?/t/.*?/.*?/
-		   (?<image>.+?\.\w+))"
-    }sx;
+our $pattern = $Comics::Plugin::JHall::pattern;
 
 # Important: Return the package name!
 __PACKAGE__;
