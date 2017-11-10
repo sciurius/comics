@@ -7,22 +7,18 @@ package Comics::Plugin::Bloop;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "JHall Bloop";
-our $url     = "http://jhallcomics.com/Bloop/";
+our $url     = "http://jhallcomics.com/bloop/";
 
 our $pattern =
-  qr{ <div \s+ class="sixteen\scolumns" \s+ id="comic-container"> \s+
+  qr{ <div \s+ .*? class="image-block-wrapper \s+ .*? > \s*
+      <noscript>
       <img \s+
-       src="(?<url>/sites/default/files/styles/comic/public/(?<image>.+?\.\w+))"
-       .*?
-       <div \s+ class="sixteen\scolumns"> \s+
-         <div \s+ id="comment"> \s+
-	   <p> \s+
-	     <div .*? ><div .*? ><div .*? >
-	       <p>(?<alt> .*? )</p> \s+
-            </div></div></div>
+       src="(?<url>https?://static1.squarespace.com/static/
+                   .*?/t/.*?/.*?/
+		   (?<image>.+?\.\w+))"
     }sx;
 
 # Important: Return the package name!
