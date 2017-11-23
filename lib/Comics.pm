@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Nov 10 19:39:29 2017
-# Update Count    : 380
+# Last Modified On: Thu Nov 23 09:38:18 2017
+# Update Count    : 384
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -185,6 +185,9 @@ sub load_plugins {
 
 	debug("Loading $m...");
 	$m =~ s/\.pm$//;
+	# If the module is already loaded, remove it first.
+	# Otherwise the require won't produce the __PACKAGE__ result.
+	delete $INC{"Comics/Plugin/$m.pm"};
 	my $pkg = eval { require "Comics/Plugin/$m.pm" };
 	die("Comics/Plugin/$m.pm: $@\n") unless $pkg;
 	unless ( $pkg eq "Comics::Plugin::$m" ) {
