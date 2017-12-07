@@ -14,13 +14,14 @@ our $url     = "http://www.loadingartist.com/comic/";
 
 our @patterns =
   (
-   qr{ <meta \s+ property="og:url" \s+ content="(?<url>.*?)">
+   qr{ </title> \s*
+       <meta \s+ property="og:url" \s+ content="(?<url>.*?)" \s*/? >
    }sx,
-   qr{ <meta \s+ property="og:title" \s+ content="(?<title>.*?)">
+   qr{ <meta \s+ property="og:title" \s+ content="(?<title>.*?)" \s*/?>
       .*?
       <div \s+ class="comic"> \s*
       <img \s+
-       src="(?<url>https?://(?:www\.)?loadingartist.com/wp-content/uploads/
+       src="(?<url>(?:https?://(?:www\.)?loadingartist.com)?/wp-content/uploads/
             \d+/\d+/
             (?<image>.+?\.\w+))"
  }sx,
