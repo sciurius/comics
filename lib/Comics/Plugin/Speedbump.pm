@@ -7,7 +7,7 @@ package Comics::Plugin::Speedbump;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Speedbump";
 our $url     = "https://www.speedbump.com/";
@@ -18,7 +18,7 @@ our $pattern =
       <img \s+
        src="?
            (?<url>/+static.*?.squarespace.com/static/
-            .*?/t/.*?/(?<image>.*?)/\?format=.*?)
+            .*?/t/.*?/(?<image>.*?)/\?format=\d+w)
            "?
     }x;
 
