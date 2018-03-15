@@ -7,7 +7,7 @@ package Comics::Plugin::Channelate;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Channelate";
 our $url     = "http://channelate.com/";
