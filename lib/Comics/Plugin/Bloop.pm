@@ -5,25 +5,14 @@ use warnings;
 
 package Comics::Plugin::Bloop;
 
-use parent qw(Comics::Fetcher::Single);
+use parent qw(Comics::Plugin::JHall);
 
-our $VERSION = "1.00";
+our $VERSION = "1.02";
 
-our $name    = "JHall Bloop";
-our $url     = "http://jhallcomics.com/Bloop/";
+our $name    = $Comics::Plugin::JHall::name . " Bloop";
+our $url     = $Comics::Plugin::JHall::url . "bloop/";
 
-our $pattern =
-  qr{ <div \s+ class="sixteen\scolumns" \s+ id="comic-container"> \s+
-      <img \s+
-       src="(?<url>/sites/default/files/styles/comic/public/(?<image>.+?\.\w+))"
-       .*?
-       <div \s+ class="sixteen\scolumns"> \s+
-         <div \s+ id="comment"> \s+
-	   <p> \s+
-	     <div .*? ><div .*? ><div .*? >
-	       <p>(?<alt> .*? )</p> \s+
-            </div></div></div>
-    }sx;
+our $pattern = $Comics::Plugin::JHall::pattern;
 
 # Important: Return the package name!
 __PACKAGE__;

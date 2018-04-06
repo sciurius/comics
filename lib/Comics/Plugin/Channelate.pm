@@ -7,15 +7,17 @@ package Comics::Plugin::Channelate;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Channelate";
 our $url     = "http://channelate.com/";
 
 our $pattern =
-  qr{ <div \s+ id="comic.*?" \s+ class="comicpane" > \s*
+  qr{ <div \s+ class="comic-table" > \s*
+      <div \s+ id="comic" > \s*
       <img \s+
-       src="(?<url>http://www.channelate.com/comics/(?<image>.+?\.\w+))" \s+
+       src="(?<url>https?://www.channelate.com/wp-content/uploads/\d+/\d+/
+             (?<image>.+?\.\w+))" \s+
        alt="(?<alt>.*?)" \s+
        title="(?<title>.*?)"
     }sx;
