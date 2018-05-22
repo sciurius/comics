@@ -5,6 +5,8 @@ use warnings;
 
 package Comics::Plugin::GoneIntoRapture;
 
+#### NOTE: Requires OK from Oath/Tumbler.
+
 use parent qw(Comics::Fetcher::Single);
 
 our $VERSION = "1.00";

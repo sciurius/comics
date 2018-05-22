@@ -5,6 +5,8 @@ use warnings;
 
 package Comics::Plugin::PretendsToBeDrawing;
 
+#### NOTE: PtbD now uses individual panes for the comic. Hard to do.
+
 use parent qw(Comics::Fetcher::Single);
 
 our $VERSION = "1.02";

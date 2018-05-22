@@ -7,24 +7,22 @@ package Comics::Plugin::MyExtraLife;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "0.02";
+our $VERSION = "1.00";
 
-sub register {
-    shift->SUPER::register
-      ( { name    => "Extralife",
-	  url     => "http://www.myextralife.com/",
-	  pat	  =>
-	    qr{ <img \s+
-		class="comic" \s+
-		src="(?<url>http://www.myextralife.com/wp-content/uploads/
-		\d+/\d+/
-		(?<image>[^./]+\.\w+))" \s+
+our $name    = "Extralife";
+our $url     = "http://www.myextralife.com/";
+our $pattern =
+	    qr{ </noscript> \s*
+		<img \s+
+		class="thumb-image" \s+
 	        alt="(?<alt>.*?)" \s+
-	        title="(?<title>.*?)" \s+
-		/>
-	      }x,
-	} );
-}
+		data-src="(?<url>https?://static\d.squarespace.com/static/
+		[0-9a-f]+/
+		[0-9a-f]+/
+		[0-9a-f]+/
+		[0-9]+/
+		(?<image>[^./]+\.\w+))"
+	      }xi;
 
 # Important: Return the package name!
 __PACKAGE__;

@@ -14,7 +14,7 @@ our $url     = "http://www.joshuawright.net/";
 
 our $pattern =
   qr{ 
-       src="(?<url>images/(?<image>picture%20-%20slackwyrm%20\d+\.\w+))\?crc=\d+"
+       src="(?<url>images/(?<image>picture%20-%20slackwyrm%20\w+\.\w+))\?crc=\d+"
     }x;
 
 # Important: Return the package name!
