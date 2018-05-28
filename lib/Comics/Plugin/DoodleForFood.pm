@@ -20,7 +20,7 @@ our $pattern =
       <img \s+
        src="?(?<url>https?://\d+\.media\.tumblr\.com/
                     [0-9a-f]+/
-	            (?<image>tumblr_.+_1280\.\w+))"? \s+
+	            (?<image>tumblr_.+?_1280\.\w+))"? \s+
                     alt="(?<title>.*)
     }x;
 
