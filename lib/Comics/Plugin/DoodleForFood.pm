@@ -9,7 +9,7 @@ package Comics::Plugin::DoodleForFood;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Doodle For Food";
 our $url     = "http://www.doodleforfood.com/";
@@ -21,8 +21,8 @@ our $pattern =
        src="?(?<url>https?://\d+\.media\.tumblr\.com/
                     [0-9a-f]+/
 	            (?<image>tumblr_.+?_1280\.\w+))"? \s+
-                    alt="(?<title>.*)
-    }x;
+                    alt="(?<title>.+?)"
+    }xs;
 
 # Important: Return the package name!
 __PACKAGE__;
