@@ -4,7 +4,9 @@ Revision history for Comics
 
 	Add DoodleForFood.
 	Fix patterns for LeastICouldDo, CyanideAndHappiness, DoodleForFood,
-	MyExtraLife, SlackWyrm, QuestionableContent, SMBC, WhatTheDuck.
+	MyExtraLife, SlackWyrm, QuestionableContent, SMBC,
+	WhatTheDuck.
+	Rename MyExtraLife to Frogpants and update patterns.
 	Disable PretendsToBeDrawing. We cannot do multi-pane comics yet.
 
 1.08	2018-04-06
