@@ -47,7 +47,7 @@ WriteMakefile
    bugtracker => "https://github.com/sciurius/comics/issues",
   },
   provides => {
-	       "Comics" => { file = "lib/Comics.pm",
+	       "Comics" => { file => "lib/Comics.pm",
 			     version => $version },
 	      },
   no_index =>
