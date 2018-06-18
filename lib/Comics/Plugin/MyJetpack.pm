@@ -7,13 +7,13 @@ package Comics::Plugin::MyJetpack;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "You're all just jealous of my Jetpack";
 our $url     = "http://myjetpack.tumblr.com/";
 our $pattern =
 	    qr{ <a \s+
-		 href="http://myjetpack.tumblr.com/image/\d+"> \s*
+		 href="https?://myjetpack.tumblr.com/image/\d+"> \s*
 		 <img \s+
 		 src="(?<url>http://.*?\.media\.tumblr\.com/
 		 [0-9a-f]+/(?<image>.*?\.\w+))" \s+
