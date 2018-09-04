@@ -7,9 +7,9 @@ package Comics::Plugin::GirlsWithSlingshots;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
-our $name    = "Girls With Slignshots";
+our $name    = "Girls With Slingshots";
 our $url     = "https://girlswithslingshots.com/";
 
 our $pattern =
