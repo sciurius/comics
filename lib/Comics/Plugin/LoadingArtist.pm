@@ -7,10 +7,13 @@ package Comics::Plugin::LoadingArtist;
 
 use parent qw(Comics::Fetcher::Cascade);
 
-our $VERSION = "1.02";
+our $VERSION = "1.03";
 
 our $name    = "Loading Artist";
-our $url     = "http://www.loadingartist.com/comic/";
+our $url     = "https://www.loadingartist.com/comic/";
+
+# Seems to give errors
+our $disabled = 1;
 
 our @patterns =
   (
