@@ -19,6 +19,7 @@ WriteMakefile
  AUTHOR	        => 'Johan Vromans <jvromans@squirrel.nl>',
  MIN_PERL_VERSION => 5.12.0,
  INSTALLDIRS	=> 'site',
+ LICENSE	=> 'perl_5',
  EXE_FILES	=> [ 'script/collect' ],
  PL_FILES	=>
  {
@@ -40,7 +41,6 @@ WriteMakefile
 
  META_MERGE =>
  {
-  license      => "perl_5",
   resources    =>
   {
    repository => 
