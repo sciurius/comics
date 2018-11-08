@@ -12,6 +12,7 @@ use strict;
 use warnings;
 use utf8;
 use Carp;
+use HTML::Entities;
 
 package Comics;
 
@@ -457,7 +458,7 @@ sub statmsg {
 	    for ( @{ $stats->{fail} } ) {
 		my $t = $_->[1];
 		$t =~ s/ at .*//s;
-		$res .= $_->[0] . " ($t)&#10;";
+		$res .= encode_entities($_->[0]) . " ($t)&#10;";
 	    }
 	    $res .= "\">$fail fail</span>";
 	}
