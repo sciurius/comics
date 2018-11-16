@@ -116,7 +116,7 @@ sub fetch {
 	my $data;
 	foreach my $pat ( @$pats ) {
 	    $pix++;
-
+	    $data = "";
 	    $state->{trying} = $url;
 
 	    if ( $reuse ) {
