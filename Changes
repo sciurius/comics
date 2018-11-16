@@ -2,6 +2,8 @@ Revision history for Comics
 
 1.12
 
+	Add --reuse option to reuse saved fetch results (for
+	developing/debugging).
 	Fix patterns for Channelate, Glasbergen.
 
 1.11	2018-10-25
