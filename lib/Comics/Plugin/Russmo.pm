@@ -7,14 +7,16 @@ package Comics::Plugin::Russmo;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Russmo";
 our $url     = "http://russmo.com";
 our $pattern =
-	    qr{ <img \s+ class="alignleft \s+ wp-image-530" \s+
+	    qr{ <img \s+
 		src="(?<url>https?://russmo.com/wp-content/
-		uploads/\d+/\d+/(?<image>\d+.+?))" \s*
+		uploads/\d+/\d+/(?<image>\d+.+?))" \s+
+	        alt="" \s+
+	        class="wp-image-627"
 	      }x;
 
 # Important: Return the package name!
