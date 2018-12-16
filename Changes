@@ -4,7 +4,7 @@ Revision history for Comics
 
 	Add --reuse option to reuse saved fetch results (for
 	developing/debugging).
-	Add CatsCafeComics.
+	Add CatsCafeComics, RandyOtter, SkeletonClaw.
 	Fix patterns for Channelate, Glasbergen, Russmo, SavageChickens.
 
 1.11	2018-10-25
