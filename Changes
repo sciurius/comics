@@ -1,6 +1,6 @@
 Revision history for Comics
 
-1.12
+1.12	2019-04-17
 
 	Add --reuse option to reuse saved fetch results (for
 	developing/debugging).
