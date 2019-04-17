@@ -33,6 +33,7 @@ WriteMakefile
   'JSON'	      => 0,
   'HTTP::Cookies'     => 0,
   'Digest::MD5'	      => 0,
+  'ExtUtils::MakeMaker' => 6.46,
  },
  TEST_REQUIRES  =>
  {
