@@ -4,7 +4,7 @@ Revision history for Comics
 
 	Add --reuse option to reuse saved fetch results (for
 	developing/debugging).
-	Add CatsCafeComics, RandyOtter, SkeletonClaw.
+	Add CatsCafeComics, RandyOtter, SkeletonClaw, ItchyFeetComic.
 	Fix patterns for Channelate, Glasbergen, Russmo,
 	SavageChickens, DoodleForFood, PoorlyDrawnLines, GeekAndPoke.
 
