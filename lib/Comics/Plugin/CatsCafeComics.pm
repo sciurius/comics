@@ -7,10 +7,13 @@ package Comics::Plugin::CatsCafeComics;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Cat's Cafe";
 our $url     = "http://catscafecomics.com/";
+
+# Turned into a web shop?
+our $disabled = 1;
 
 our $pattern =
   qr{ <div \s+ class="post-thumbnail"> \s*
