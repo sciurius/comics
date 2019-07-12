@@ -1,3 +1,3 @@
 # This file is generated. Do not edit!
 package Comics::Version;
-our $VERSION = "1.130_006";
+our $VERSION = "1.130_007";
