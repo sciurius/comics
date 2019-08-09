@@ -7,7 +7,7 @@ package Comics::Plugin::GrrlPower;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Grll Power";
 our $url     = "https://grrlpowercomic.com",
@@ -18,7 +18,7 @@ our $pattern =
 	     https://grrlpowercomic.com/wp-content/uploads/
 	     \d+/\d+/
 	     (?<image>.*?\.\w+))" \s+
-       alt="(?<alt>.*)" \s+
+       alt="(?<alt>.*?)" \s+
        title="(?<title>.*?)" \s+
     }isx;
 
