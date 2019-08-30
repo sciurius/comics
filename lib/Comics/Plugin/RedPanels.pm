@@ -16,7 +16,7 @@ After 18 wonderful months as the creator of RedPanels, I am announcing
 my retirement. Knowing and interacting with you has made all the labor
 worthwhile.
 
-=cut
+=end disabled
 
 use parent qw(Comics::Fetcher::Single);
 
