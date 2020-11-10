@@ -1,7 +1,8 @@
 Revision history for Comics
 
-1.18
+1.18	2020-11-10
 
+	Add GitHub Actions (thanks to Gabor Szabo).
 	Disable LolNein.
 	Remove obsolete entries from MANIFEST.
 
