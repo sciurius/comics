@@ -1,5 +1,10 @@
 Revision history for Comics
 
+1.18
+
+	Disable LolNein.
+	Remove obsolete entries from MANIFEST.
+
 1.17	2020-11-06
 
 	Fix patterns for Glasbergen, SlackWyrm, PBFComics.
