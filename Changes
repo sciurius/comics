@@ -1,5 +1,9 @@
 Revision history for Comics
 
+1.19
+
+	Disable ItchyFeet (Moved to TinyView).
+
 1.18	2020-11-10
 
 	Add GitHub Actions (thanks to Gabor Szabo).
