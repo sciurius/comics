@@ -7,14 +7,14 @@ package Comics::Plugin::CommitStrip;
 
 use parent qw(Comics::Fetcher::Cascade);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name     = "CommitStrip";
-our $url      = "http://www.commitstrip.com/en/";
+our $url      = "https://www.commitstrip.com/";
 our @patterns =
-	  ( qr{ <meta \s+
-		property="og:url" \s+
-		content="(?<url>.*?)"/>
+	  ( qr{ <a \s+
+		 href="(?<url>https://www.commitstrip.com/
+		     \d\d\d\d / \d\d / \d\d / .*? /)">
 	      }x,
 	    qr{ <img \s+
 		src="(?<url>https://www.commitstrip.com/wp-content/uploads/
