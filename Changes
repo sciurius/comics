@@ -1,7 +1,8 @@
 Revision history for Comics
 
-1.20
+1.20	2023-06-29
 
+	Fix site for all comics.com plugins.
 	Fix patterns for QuestionableContent.
 	Fix patterns for Buttersafe, CyanideAndHappiness, Nozzman,
 	PBFComics, ToonHole.
