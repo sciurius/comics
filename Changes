@@ -5,7 +5,7 @@ Revision history for Comics
 	Fix pattern for CyanideAndHappiness, SlackWyrm, BerkeleyMews.
 	Fix pattern for Sigmund, MonkeyUser, SkeletonClaw, PoorlyDrawnLines.
 	Disabled AMultiverse (diseased), MrLovenstein (out of reach).
-	Disabled Nozzman (changed), GeeknPoke (stopped).
+	Disabled Nozzman (changed), WhatTheDuck, GeeknPoke (stopped).
 	Use File::LoadLines.
 
 1.20	2023-06-29
