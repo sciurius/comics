@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
 # Last Modified By: 
-# Last Modified On: Mon Feb 26 08:36:49 2024
-# Update Count    : 392
+# Last Modified On: Mon Feb 26 09:40:52 2024
+# Update Count    : 393
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -168,7 +168,7 @@ sub get_state {
 sub save_state {
     unlink($statefile."~");
     rename( $statefile, $statefile."~" );
-    open( my $fd, '>', $statefile );
+    open( my $fd, '>:utf8', $statefile );
     print $fd JSON->new->canonical->pretty(1)->encode($state);
     close($fd);
 }
