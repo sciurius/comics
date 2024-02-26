@@ -3,7 +3,8 @@ Revision history for Comics
 1.21
 
 	Fix pattern for CyanideAndHappiness, SlackWyrm, BerkeleyMews.
-	Fix pattern for Sigmund, MonkeyUser.
+	Fix pattern for Sigmund, MonkeyUser, SkeletonClaw.
+	Disabled AMultiverse (diseased), MrLovenstein (out of reach).
 	Use File::LoadLines.
 
 1.20	2023-06-29
