@@ -7,16 +7,20 @@ package Comics::Plugin::SkeletonClaw;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Skeleton Claw";
-our $url     = "http://www.skeletonclaw.com/";
+our $url     = "https://www.skeletonclaw.com/";
 our $pattern =
-	    qr{ <div \s+ class="photo-wrapper"> \s+
-		<a \s+ href=".*?"> \s+
+	    qr{ <div \s+ class="photo-wrapper-inner"> \s+
+		<a \s+ href=".*?"> \s*
 		<img \s+
+		 class="u-photo" \s+
 		 src="(?<url>https?://\d+.media.tumblr.com/
-		        .*?/(?<image>.*?\.\w+))" \s+
+		     .*?/
+		     .*?/
+		     s1280x1920/
+		     (?<image>.*?\.\w+))" \s+
 			alt="(?<alt>.*?)">
 	      }xs;
 
