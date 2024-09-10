@@ -70,6 +70,9 @@ sub urlabs {
 	if ( $path =~ m;^//; ) {
 	    $path = "http:" . $path;
 	}
+	elsif ( $path =~ m;^/static\.nrc\.nl/; ) { # TODO
+	    $path = "https:/" . $path;
+	}
 	else {
 	    $url =~ s;(^\w+://.*?)/.*;$1;;
 	    $path = $url . $path;
