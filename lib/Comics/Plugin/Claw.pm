@@ -3,14 +3,14 @@
 use strict;
 use warnings;
 
-package Comics::Plugin::CalvinAndHobbes;
+package Comics::Plugin::Claw;
 
 use parent qw(Comics::Fetcher::GoComics);
 
 our $VERSION = "1.00";
 
-our $name = "Calvin and Hobbes";
-our $url  = "https://www.gocomics.com/calvinandhobbes";
+our $name    = "Claw";
+our $url     = "https://www.gocomics.com/claw";
 
 # Important: Return the package name!
 __PACKAGE__;

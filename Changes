@@ -1,5 +1,31 @@
 Revision history for Comics
 
+1.21	2024-12-27
+
+	Fix pattern for FokkeEnSukke.
+	Fix pattern for CyanideAndHappiness, SlackWyrm, BerkeleyMews.
+	Fix pattern for Sigmund, MonkeyUser, SkeletonClaw, PoorlyDrawnLines.
+	Disabled AMultiverse (diseased), MrLovenstein (out of reach).
+	Disabled Nozzman (changed), WhatTheDuck, GeeknPoke (stopped).
+	Use File::LoadLines.
+
+1.20	2023-06-29
+
+	Fix site for all comics.com plugins.
+	Fix patterns for QuestionableContent.
+	Fix patterns for Buttersafe, CyanideAndHappiness, Nozzman,
+	PBFComics, ToonHole.
+	Fix patterns for Sinfest, Glasbergen, CommitStrip, CSectionComics.
+	Add Claw, CatsCafe, WrongHands.
+	Disabled Dilbert.
+
+1.19	2021-09-13
+
+	Fix patterns for Sinfest, GeekAndPoke, SlackWyrm, Nozzman,
+	PoorlyDrawnLines, JHall, Sigmund, Speedbump, ToonHole.
+	Add BreakingCatNews.
+	Disable ItchyFeet (Moved to TinyView), Russmo (ceased?), Soopah (ceased?).
+
 1.18	2020-11-10
 
 	Add GitHub Actions (thanks to Gabor Szabo).

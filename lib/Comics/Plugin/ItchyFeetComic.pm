@@ -7,7 +7,10 @@ package Comics::Plugin::ItchyFeetComic;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
+
+# Moved to TinyView.
+our $disabled = 1;
 
 our $name    = "Itchy Feet";
 our $url     = "http://www.itchyfeetcomic.com/";

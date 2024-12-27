@@ -7,20 +7,19 @@ package Comics::Plugin::Nozzman;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.02";
 
 our $name    = "Nozzman";
-our $url     = "http://www.nozzman.nl/cartoons/";
+our $url     = "https://nozzman.nl/persoonlijk-werk";
+our $disabled = 1;		# Changed
 
 our $pattern =
-  qr{ <noscript>
+  qr{ <div \s+ class="grid__image-wrapper"> \s*
       <img \s+
-       src="(?<url>https://images.squarespace-cdn.com/
-	     content/v1/
-		[-_0-9a-z]+/
-		[-_0-9a-z]+/
-		[-_0-9a-z]+/
-		(?<image>[^./]+\.\w+))"
+       src="(?<url>https?://cdn.myportfolio.com/
+	   [a-f0-9---]+/
+	   (?<image>[a-f0-9---]+_rw_\d+\.\w+)
+	   \?h=[0-9a-f]+)"
     }ix;
 
 # Important: Return the package name!
