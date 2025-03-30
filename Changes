@@ -1,5 +1,9 @@
 Revision history for Comics
 
+1.22	2025-03-30
+
+	Fix GoComics fetcher.
+
 1.21	2024-12-27
 
 	Fix pattern for FokkeEnSukke.

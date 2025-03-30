@@ -54,7 +54,7 @@ Fetcher specific arguments:
 
 =cut
 
-our $VERSION = "1.02";
+our $VERSION = "1.03";
 
 # Page contents changed, january 10, 2017.
 # Page contents changed, april 5, 2018.
@@ -66,7 +66,7 @@ sub register {
     my $self = $pkg->SUPER::register($init);
 
     if ( ! $self->{url} && $self->{tag} ) {
-	$self->{url} = "http://www.gocomics.com/" . $self->{tag} . "/";
+	$self->{url} = "https?://www.gocomics.com/" . $self->{tag} . "/";
     }
 
     # Add the standard pattern for GoComics comics.
@@ -75,7 +75,7 @@ sub register {
        qr{ href="(?<url>.*?)">Comics</a>
          }x,
        qr{ <meta \s+ property="og:image" \s+
-	   content="(?<url>https?://assets.amuniversal.com/
+	   content="(?<url>https?://featureassets.amuniversal.com/assets/
 	   (?<image>[0-9a-f]+))" \s+
            />
          }x,
