@@ -71,7 +71,9 @@ sub register {
     $self->{patterns} =
       [
        qr{ (?<url>https://featureassets.gocomics.com/assets/
-	   (?<image>[0-9a-f]+)) \?
+	       (?<image>[0-9a-f]+))
+	   \?optimizer=image
+	   \&amp;width=1200
          }x,
        ];
 
