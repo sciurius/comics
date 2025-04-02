@@ -70,10 +70,12 @@ sub register {
     # Add the standard pattern for GoComics comics.
     $self->{patterns} =
       [
-       qr{ (?<url>https://featureassets.gocomics.com/assets/
+       qr{ <link \s+
+	   rel="preload" \s+
+	   as="image" \s+
+	   imageSrcSet="
+	     (?<url>https://featureassets.gocomics.com/assets/
 	       (?<image>[0-9a-f]+))
-	   \?optimizer=image
-	   \&amp;width=1200
          }x,
        ];
 
