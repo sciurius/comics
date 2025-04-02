@@ -58,6 +58,8 @@ The tag is used to generate file names for images and HTML fragments.
 
 =cut
 
+use HTML::Entities;
+
 sub register {
     my ( $pkg, $init ) = @_;
 
@@ -114,24 +116,28 @@ sub html {
 
     my $res =
 	 qq{<table class="toontable" cellpadding="0" cellspacing="0">\n} .
-	 qq{  <tr><td nowrap align="left" valign="top">} .
-	 qq{<b>} . _html($self->{name}) . qq{</b><br>\n} .
+	 qq{  <tr><td nowrap="1" align="left" valign="top">} .
+	 qq{<b>} . _html($self->{name}) . qq{</b><br />\n} .
 	 qq{        <font size="-2">Last update: } .
 	 localtime($state->{update}) .
-	 qq{</font><br><br></td>\n} .
+	 qq{</font><br /><br /></td>\n} .
 	 qq{  </tr>\n  <tr><td><a href="$self->{url}?$::uuid">} .
 	 qq{<img class="toonimage" };
 
     # Alt and title are extracted from HTML, so they should be
     # properly escaped.
-    $res .= qq{alt="} . $state->{c_alt} . qq{" }
-      if $state->{c_alt};
-    $res .= qq{title="} . $state->{c_title} . qq{" }
-      if $state->{c_title};
+    if (my $alt = $state->{c_alt}) {
+	$alt = encode_entities($alt);
+	$res .= qq{alt="} . $alt . qq{" }
+    }
+    if (my $ttl = $state->{c_title}) {
+	$ttl = encode_entities $ttl);
+	$res .= qq{title="} . $ttl . qq{" }
+    }
     $res .= qq{width="$w" height="$h" }
       if $w && $h;
 
-    $res .= qq{src="$state->{c_img}"></a></td>\n  </tr>\n</table>\n};
+    $res .= qq{src="$state->{c_img}" /></a></td>\n  </tr>\n</table>\n};
 
     return $res;
 }
