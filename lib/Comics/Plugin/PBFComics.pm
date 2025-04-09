@@ -7,7 +7,7 @@ package Comics::Plugin::PBFComics;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.01";
+our $VERSION = "1.02";
 
 our $name    = "The Perry Bible Fellowship";
 our $url     = "https://pbfcomics.com/";
@@ -17,13 +17,14 @@ our $url     = "https://pbfcomics.com/";
 our $pattern =
   qr{ <div \s+ id="comic">
       <img \s+
-       width  = '\d+' \s+
-       height = '\d+' \s+
-       alt    = '(?<alt>.*?)' \s+
-       title  = '(?<title>.*?)' \s+
-       data-src= ['"](?<url>https?://pbfcomics.com/wp-content/uploads/
-	         \d+ / \d+ /
-	         (?<image>.+?\.\w+))['"]
+      (?:
+	  width  = '\d+' \s+ |
+	  height = '\d+' \s+ |
+	  alt    = '(?<alt>.*?)' \s+ |
+	  title  = '(?<title>.*?)' \s+ |
+	  data-src= ['"](?<url>https?://pbfcomics.com/wp-content/uploads/
+	      \d+ / \d+ /
+	      (?<image>.+?\.\w+))['"] )+
     }x;
 
 # Important: Return the package name!
