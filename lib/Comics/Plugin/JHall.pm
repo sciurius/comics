@@ -7,19 +7,20 @@ package Comics::Plugin::JHall;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.04";
+our $VERSION = "1.05";
 
 our $name    = "JHall";
 our $url     = "https://jhallcomics.com/";
 
 our $pattern =
-	    qr{ <noscript>
-		<img \s+ src="(?<url>https?://images.squarespace-cdn.com/
-		content/v1/
-		[-_0-9a-z]+/
+  qr{ <img \s+
+      data-stretch="false" \s+
+      data-src="(?<url>https?://images.squarespace-cdn.com/
+	  content/v1/
+		[0-9a-z]+/
 		[-_0-9a-z]+/
 		(?<image>[^./]+\.\w+))"
-	       }xi,
+  }xi,
 
 # Important: Return the package name!
 __PACKAGE__;
