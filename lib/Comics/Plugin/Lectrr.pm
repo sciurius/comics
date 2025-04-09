@@ -5,19 +5,19 @@ use warnings;
 
 package Comics::Plugin::Lectrr;
 
+# Note that lectrr yields random, watermarked images.
+
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.01";
+our $VERSION = "1.02";
 
 our $name    = "Lectrr";
-our $url     = "http://www.lectrr.be/nl/";
+our $url     = "https://www.lectrr.be/nl/";
 our $pattern =
-	    qr{ <div \s+  class="daily-cartoon-slide" .*?> \s*
-		<div \s+ class="slide-v-allign"> \s*
-		<a \s+ .*? class="image"> \s*
-		<img \s+
-		 src="(?<url>/files/attachments/.*?/(?<image>.*?\.\w+))" \s+
-		 title="(?<title>.*?)"
+	    qr{ <img \s+ class="s-img" \s+
+		src="(?<url>https://upcdn.io/kW15boo/watermark/cartoonsearch/
+		    (?<image>.*?\.\w+))" \s+
+		alt="(?<title>.*?)"
 	      }six;
 
 # Important: Return the package name!

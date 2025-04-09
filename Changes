@@ -1,5 +1,9 @@
 Revision history for Comics
 
+0.00
+
+	Fix Lectrr (yields random cartoon).
+
 1.23	2025-04-02
 
 	Fix GoComics fetcher.
