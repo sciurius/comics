@@ -51,11 +51,12 @@ Fetcher specific arguments:
 
 =cut
 
-our $VERSION = "1.04";
+our $VERSION = "1.05";
 
 # Page contents changed, january 10, 2017.
 # Page contents changed, april 5, 2018.
 # Page contents changed, april 1, 2025.
+# Page contents changed, may 8, 2025.
 
 sub register {
     my ( $pkg, $init ) = @_;
@@ -70,12 +71,12 @@ sub register {
     # Add the standard pattern for GoComics comics.
     $self->{patterns} =
       [
-       qr{ <link \s+
-	   rel="preload" \s+
-	   as="image" \s+
-	   imageSrcSet="
-	     (?<url>https://featureassets.gocomics.com/assets/
-	       (?<image>[0-9a-f]+))
+       qr{ <div \s+ class="ShowComicViewer_
+	   .*?
+	   "url":
+	   "(?<url>https://featureassets.gocomics.com/assets/
+	       (?<image>[0-9a-f]+))"
+	   ,"author"
          }x,
        ];
 

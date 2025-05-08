@@ -2,6 +2,7 @@ Revision history for Comics
 
 0.00
 
+	Fix GoComics fetcher.
 	Fix Lectrr (yields random cartoon).
 	Fix SkeletonClaw, PoorlyDrawnLines, PBFComics, JHall, FokkeEnSukke.
 
