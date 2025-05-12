@@ -7,10 +7,10 @@ package Comics::Plugin::SoggyCardboard;
 
 use parent qw(Comics::Fetcher::Single);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "SoggyCardboard";
-our $url     = "http://www.soggycardboard.com/";
+our $url     = "https://www.soggycardboard.com/";
 
 our $pattern =
   qr{ <div \s+ class="comic-table"> \s*
