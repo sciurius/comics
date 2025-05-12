@@ -2,9 +2,9 @@
 
 # Author          : Johan Vromans
 # Created On      : Fri Oct 21 09:18:23 2016
-# Last Modified By: 
-# Last Modified On: Mon Feb 26 09:40:52 2024
-# Update Count    : 393
+# Last Modified By: Johan Vromans
+# Last Modified On: Mon May 12 09:33:51 2025
+# Update Count    : 396
 # Status          : Unknown, Use with caution!
 
 use 5.012;
@@ -695,7 +695,7 @@ sub new {
     my $self = $pkg->SUPER::new();
     bless $self, $pkg;
 
-    $self->agent('Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0');
+    $self->agent('Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0');
     $self->timeout(10);
     $cookie_jar ||= HTTP::Cookies->new
       (
@@ -721,8 +721,7 @@ sub get {
 	# Some sites block LWP queries. Show why.
 	if ( $res->status_line =~ /^403/ ) {
 	    use Data::Dumper;
-	    warn(Dumper($res));
-	    exit;
+	    die(Dumper($res));
 	}
 	last if $res->status_line !~ /^5/; # not temp fail
 	print STDERR "Retry..." if $verbose;

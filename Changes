@@ -2,9 +2,11 @@ Revision history for Comics
 
 0.00
 
+	Prevent abort when a request fails.
 	Fix GoComics fetcher.
 	Fix Lectrr (yields random cartoon).
 	Fix SkeletonClaw, PoorlyDrawnLines, PBFComics, JHall, FokkeEnSukke.
+	Fix SoggyCardBoard.
 
 1.23	2025-04-02
 
