@@ -2,6 +2,7 @@ Revision history for Comics
 
 0.00
 
+	Allow post-processing pattern matches.
 	Prevent abort when a request fails.
 	Fix GoComics fetcher.
 	Fix Lectrr (yields random cartoon).

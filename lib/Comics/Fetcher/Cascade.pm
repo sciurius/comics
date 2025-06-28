@@ -96,6 +96,8 @@ The alternative text.
 
 use parent qw(Comics::Fetcher::Base);
 
+use Ref::Util qw(is_coderef);
+
 sub fetch {
     my ( $self, $reuse ) = @_;
     my $state = $self->{state};
@@ -114,7 +116,9 @@ sub fetch {
     else {
 	my $pix = 0;
 	my $data;
-	foreach my $pat ( @$pats ) {
+	my @pats = @$pats;
+	while ( @pats ) {
+	    my $pat = shift(@pats);
 	    $pix++;
 	    $data = "";
 	    $state->{trying} = $url;
@@ -142,15 +146,18 @@ sub fetch {
 		  if ::debugging() && !$reuse;
 		die("FAIL: pattern $pix not found");
 	    }
-
-	    $url = $self->urlabs( $url, $+{url} );
+	    my %res = %+;
+	    while ( @pats && is_coderef($pats[0]) ) {
+		shift(@pats)->(\%res);
+	    }
+	    $url = $self->urlabs( $url, $res{url} );
 	    unless ( $url ) {
 		die("FAIL: pattern $pix not found");
 	    }
 
 	    # Other match data expected:
-	    $title = $+{title} if $+{title};
-	    $alt   = $+{alt}   if $+{alt};
+	    $title = $res{title} if $res{title};
+	    $alt   = $res{alt}   if $res{alt};
 
 	    $referer = $url;
 	}

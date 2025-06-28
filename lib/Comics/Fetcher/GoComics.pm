@@ -71,14 +71,14 @@ sub register {
     # Add the standard pattern for GoComics comics.
     $self->{patterns} =
       [
-       qr{ <div \s+ class="ShowComicViewer_
-	   .*?
-	   "url":
-	   "(?<url>https://featureassets.gocomics.com/assets/
-	       (?<image>[0-9a-f]+))"
-	   ,"author"
-         }x,
-       ];
+       qr{ \\"comicBlobName\\":\\"(?<image>.*?)\\"
+          }x,
+       sub {
+	   my $res = shift;
+	   $res->{url} =
+	     "https://featureassets.gocomics.com/assets/". $res->{image};
+       },
+      ];
 
     return $self;
 }
