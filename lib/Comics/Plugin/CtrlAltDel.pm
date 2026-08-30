@@ -10,7 +10,7 @@ use parent qw(Comics::Fetcher::Single);
 our $VERSION = "1.02";
 
 our $name    = "CTRL+ALT+DEL";
-our $url     = "http://www.cad-comic.com/";
+our $url     = "https://www.cad-comic.com/";
 our $pattern =
 	    qr{ <img \s+
 		 class="comic-display" \s+
