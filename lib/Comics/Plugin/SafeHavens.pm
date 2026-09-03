@@ -7,7 +7,7 @@ package Comics::Plugin::SafeHavens;
 
 use parent qw(Comics::Fetcher::Cascade);
 
-our $VERSION = "1.00";
+our $VERSION = "1.01";
 
 our $name    = "Safe Havens";
 
@@ -23,7 +23,6 @@ our @patterns	  =
   ( qr{ <meta \s+
 	property="og:image" \s+
 	content="(?<url>https://wp.comicskingdom.com/comicskingdom-redesign-uploads-production/$year/$month/(?<image>[a-zA-Z0-9]+\.\w+))"
-	/>
       }x,
  );
 
